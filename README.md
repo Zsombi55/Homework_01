@@ -25,10 +25,14 @@ _As I understand the instructions:_ get a 1 word text from user, reverse order t
 
 * __A5 (..),__ done,  by Instructor , after collective request, during lesson 20201207.
 
-_As I understand the instructions:_ get 3 text, check content, for each input if null print "no content" else return input; USE NOT: loop instructions (eg. if, for), try "??" when reading.
+_As I understand the instructions:_ get 3 text, check content, for each input `if null` print "no content" `else` return input; USE NOT: loop instructions (eg. if, for), try "??" when reading.
 
 > 20201209 ~ 16
 
-* __A6 (LoginLoops),__ wip.
+* __A6 (LoginLoops),__ done.
 
-_As I understand the instructions:_ store the expected input values in code, ask input and check validity, if they match print the predefined message "Welcome!", if there is no match print so & ask again; 3 versions: WHILE, DO-WHILE and FOR.
+_As I understand the instructions:_ store the expected input values in code, ask input and check validity, if they match print the predefined message "Welcome!", if there is no match print so & ask again; 3 versions: `WHILE`, `DO-WHILE` and `FOR`.
+
+* __A7 (BasicVectoring),__ wip.
+
+_As I understand the instructions:_ read integers in vector, do calculations/manipulations: smallest & largest item index, sort as-& descending, print subvector of even & odd items, print a subvector with items of the original's section starting from a user given index and length; use a function like `string.Substring(index, length)`.
