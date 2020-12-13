@@ -20,7 +20,7 @@ namespace LoginLoops
 			string[] inValues = new string[2]; // Store user input.
 			
 			// --- VERSION 1, FOR
-			for(int tries = 0; tries < 3; tries++)
+/*			for(int tries = 0; tries < 3; tries++)
 			{
 				Console.WriteLine($"\nTry {tries + 1} out of 3.\n");
 
@@ -39,7 +39,29 @@ namespace LoginLoops
 					continue;
 				}
 			}
+*/
+			// --- VERSION 2, WHILE
+			int tries = 0;
+			while(tries < 3)
+			{
+				Console.WriteLine($"\nTry {tries + 1} out of 3.\n");
 
+				ReadInput(askLabels, inValues);
+				bool isOk = CheckInputFOR(loginData, inValues);
+
+				if(isOk)
+				{
+					Console.WriteLine("=====\nWelcome!");
+					break;
+				} else {
+					if(tries == 2 && !isOk) {
+						Console.WriteLine("=====\nThere are NO more tries! Please restart.");
+						break;
+					}
+					tries++;
+					continue;
+				}
+			}
 
 			Console.Write("\nEnd.\n"); Console.ReadKey();
 		}
