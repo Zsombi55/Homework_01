@@ -29,8 +29,6 @@ _As I understand the instructions:_ get 3 text, check content, for each input if
 
 > 20201209 ~ 16
 
-* __AS (LoginLoops),__ wip.
+* __A6 (LoginLoops),__ wip.
 
 _As I understand the instructions:_ store the expected input values in code, ask input and check validity, if they match print the predefined message "Welcome!", if there is no match print so & ask again; 3 versions: WHILE, DO-WHILE and FOR.
-
-Wasted about 8 hours. Thanks Visual Studio, nothing but a glorified resource hogging code editor, and even in that it hinders more than it helps with its incessant obtrusive auto-filling /formatting. Had to restore te last repo. version because whatever VS did to the Solution SharpDevelop couldn't build it anymore saying there's no ojb/Debug/projectName.exe while it was clearly there.
