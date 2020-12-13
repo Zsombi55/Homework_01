@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StringFinder", "StringFinde
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StringTable", "StringTable\StringTable.csproj", "{CAD958AF-03E5-4A32-9466-5EE1F75FEE69}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoginLoops", "LoginLoops\LoginLoops.csproj", "{876C2220-E486-46A3-B675-55E3B7A6E1A5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{CAD958AF-03E5-4A32-9466-5EE1F75FEE69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CAD958AF-03E5-4A32-9466-5EE1F75FEE69}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CAD958AF-03E5-4A32-9466-5EE1F75FEE69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{876C2220-E486-46A3-B675-55E3B7A6E1A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{876C2220-E486-46A3-B675-55E3B7A6E1A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{876C2220-E486-46A3-B675-55E3B7A6E1A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{876C2220-E486-46A3-B675-55E3B7A6E1A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
