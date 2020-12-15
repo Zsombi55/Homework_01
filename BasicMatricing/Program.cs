@@ -50,9 +50,9 @@ namespace BasicMatricing
 		{
 			Console.WriteLine(label);
 
-			for (int i = 0; i < inMatrix.GetLength(0); i++) {
-                for (int j = 0; j < inMatrix.GetLength(1); j++) {
-                    inMatrix[i, j] = DefineTheMatrixLimits($"Enter element [{i}, {j}] = ");
+			for (int rowi = 0; rowi < inMatrix.GetLength(0); rowi++) {
+                for (int coli = 0; coli < inMatrix.GetLength(1); coli++) {
+                    inMatrix[rowi, coli] = DefineTheMatrixLimits($"Enter element [{rowi}, {coli}] = ");
                 }
             }
 
@@ -63,15 +63,15 @@ namespace BasicMatricing
 		{
 			if (inMatrix is null) return;
 
-            int rows = inMatrix.GetLength(0);
-            int cols = inMatrix.GetLength(1);
+            int rows = inMatrix.GetLength(0); // Nr. of  rows.
+            int cols = inMatrix.GetLength(1); // Nr. of  columns.
 
             Console.WriteLine("-----------");
-			for (int i = 0; i < rows; i++)
+			for (int rowi = 0; rowi < rows; rowi++)
             {
-                for (int j = 0; j < cols; j++) // Put all same row items on the same line.
+                for (int coli = 0; coli < cols; coli++) // Put all same row items on the same line.
                 {
-                    Console.Write($"{inMatrix[i, j], 5}"); // <item, distance between items on same line>.
+                    Console.Write($"{inMatrix[rowi, coli], 5}"); // <item, distance between items on same line>.
                 }
 
                 Console.WriteLine(); // New row.
@@ -83,10 +83,10 @@ namespace BasicMatricing
 		{
 			if(inMatrix is null) return;
 
-            int coll = inMatrix.GetLength(0); // row length.
-            int rowl = inMatrix.GetLength(1); // column length.
-            int minSize = Math.Min(coll, rowl);
-			Console.WriteLine($"{coll} | {rowl} | {minSize} .");
+            int coll = inMatrix.GetLength(0); // C O L U M N  length.
+            int rowl = inMatrix.GetLength(1); // R O W  length.
+            int minSize = Math.Min(rowl, coll);
+			Console.WriteLine($"Row length: {rowl} | Column length: {coll} | Minimum size: {minSize} .");
 
             Console.WriteLine();
             Console.WriteLine("Secondary diagonal line:\n-------------------------");
