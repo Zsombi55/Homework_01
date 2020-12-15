@@ -5,6 +5,7 @@
  * 7th.
  */
 using System;
+using System.Collections.Generic;
 
 namespace BasicVectoring
 {
@@ -14,17 +15,19 @@ namespace BasicVectoring
 		static void Main(string[] args)
 		{
 			string askVector = "Enter 10 integer numbers to create the vector: ";
-			int[] mainVectorData = new int[10];
+			int[] mainVectorData = new int[10];  //int[] v = new int[mainVectorData.Length];
 			
 			MakeVector(askVector, mainVectorData);
 			Console.WriteLine($"The vector: {string.Join(" ", mainVectorData)}\nLength: {mainVectorData.Length}.");
 
 			GetMinMax(mainVectorData); // Find and print the minimum and maximum elements.
 
-			//SortAscDesc(mainVectorData); // Sort and print the vector in ascending and descending order.
-			SortAsc(mainVectorData); // Sort and print the vector in ascending order.
-			SortDes(mainVectorData); // Sort and print the vector in descending order.
+			// SortAscDesc(mainVectorData); // Sort and print the vector in ascending and descending order.
+			SortAsc(mainVectorData); // Print the vector in ascending order.
+			SortDes(mainVectorData); //	-||- descending order.
 
+			GetEvenOddSub(mainVectorData); // Pring a sub-vector from the even elements of the main vector.
+			
 
 			Console.Write("\nEnd.\n"); Console.ReadKey();
 		}
@@ -86,40 +89,65 @@ namespace BasicVectoring
 		{
 			// int[] sa = new int[inVector.Length];  int[] sd = new int[inVector.Length];
 			// for(int e = 0; e < a.Length; e++) { sa[e] = inVector[e];  sd[e] = inVector[e]; }
-			
-			for (int i = 0; i < inVector.Length - 1; i++)  
+			int[] v = new int[inVector.Length];
+			for (int i = 0; i < inVector.Length; i++) { v[i] = inVector[i]; }
+
+			for (int i = 0; i < v.Length - 1; i++)  
 			{  
-				for (int j = 0; j < inVector.Length - 1; j++)  
+				for (int j = 0; j < v.Length - 1; j++)  
 				{  
-					if (inVector[j] > inVector[j + 1])  
+					if (v[j] > v[j + 1])  
 					{
-						int t = inVector[j];  
-						inVector[j] = inVector[j + 1];  
-						inVector[j + 1] = t;  
+						int t = v[j];  
+						v[j] = v[j + 1];  
+						v[j + 1] = t;  
 					}
 				}  
 			}
 			Console.WriteLine("----------");
-			Console.WriteLine($"Sorted ascending: {string.Join(" ", inVector)}.\n");
+			Console.WriteLine($"Sorted ascending: {string.Join(" ", v)}.\n");
 		}	
 
 		private static void SortDes(int[] inVector)
 		{	
-			for (int i = 0; i < inVector.Length - 1; i++)  
+			int[] v = new int[inVector.Length];
+			for (int i = 0; i < inVector.Length; i++) { v[i] = inVector[i]; }
+
+			for (int i = 0; i < v.Length - 1; i++)  
 			{  
-				for (int j = 0; j < inVector.Length - 1; j++)  
+				for (int j = 0; j < v.Length - 1; j++)  
 				{  
-					if (inVector[j] < inVector[j + 1])  
+					if (v[j] < v[j + 1])  
 					{  
-						int t = inVector[j];  
-						inVector[j] = inVector[j + 1];  
-						inVector[j + 1] = t;  
+						int t = v[j];  
+						v[j] = v[j + 1];  
+						v[j + 1] = t;  
 					}
 				}  
 			}
-			Console.WriteLine($"Sorted descending: {string.Join(" ", inVector)}.");
+			Console.WriteLine($"Sorted descending: {string.Join(" ", v)}.");
 		}
 
+		private static void GetEvenOddSub(int[] inVector)
+		{
+			List<int> t = new List<int>();
+			for(int i = 0; i < inVector.Length; i++)
+			{
+				if(inVector[i] % 2 == 0) t.Add(inVector[i]);
+			}
+			int[] even = t.ToArray();
+			t.Clear();
+			for(int i = 0; i < inVector.Length; i++)
+			{
+				if(inVector[i] % 2 != 0) t.Add(inVector[i]);
+			}
+			int[] odd = t.ToArray();
 
+			Console.WriteLine("----------");
+			Console.WriteLine($"There are  {even.Length}  even elements: {string.Join(" ", even)}.\n" +
+							  $"There are  {odd.Length}  odd elements: {string.Join(" ", odd)}.");
+		}
+
+		
 	}
 }
