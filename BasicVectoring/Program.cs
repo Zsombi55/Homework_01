@@ -9,13 +9,13 @@ using System.Collections.Generic;
 
 namespace BasicVectoring
 {
-// Goal: read integers in vector, do calculations/manipulations: smallest & largest item index, sort as-& descending, print subvector of even & odd items, print a subvector with items of the original's section starting from a user given index and length; use a function like `string.Substring(index, length)`.
+// Goal: read integers in vector, do calculations/manipulations: smallest & largest item index, sort as-& descending, print subvector of even & odd items, print a subvector with items of the original's section starting from a user given index and length; use/ make a function like `string.Substring(index, length)`.
 	class Program
 	{
 		static void Main(string[] args)
 		{
 			string askVector = "Enter 10 integer numbers to create the vector: ";
-			int[] mainVectorData = new int[10];  //int[] v = new int[mainVectorData.Length];
+			int[] mainVectorData = new int[10];  int[] indexLengthRange = new int[2];
 			
 			MakeVector(askVector, mainVectorData);
 			Console.WriteLine($"The vector: {string.Join(" ", mainVectorData)}\nLength: {mainVectorData.Length}.");
@@ -28,6 +28,8 @@ namespace BasicVectoring
 
 			GetEvenOddSub(mainVectorData); // Pring a sub-vector from the even elements of the main vector.
 			
+			//GetRangeSub(mainVectorData, indexLengthRange);
+			Console.WriteLine($"\nThe selected sub-vector is: {string.Join(" ", GetRangeSub(mainVectorData, indexLengthRange))}.");
 
 			Console.Write("\nEnd.\n"); Console.ReadKey();
 		}
@@ -148,6 +150,39 @@ namespace BasicVectoring
 							  $"There are  {odd.Length}  odd elements: {string.Join(" ", odd)}.");
 		}
 
-		
+		public static int[] GetRangeSub(int[] inVector, int[] indexStartLength) // string.Substring(index, length)
+		{
+			Console.WriteLine("----------");
+			Console.Write("Enter start range index (watch the limits): ");
+			try {
+				int.TryParse(Console.ReadLine(), out int r);
+					if(r > -1 && r < inVector.Length)
+						indexStartLength[0] = r;
+					else GetRangeSub(inVector, indexStartLength);
+					Console.WriteLine(r);
+			}
+			catch(Exception e) { Console.WriteLine($"ERROR.. {e}"); }
+			
+			Console.Write($"Enter the desired length (watch the limit): ");
+			try {
+				int.TryParse(Console.ReadLine(), out int r);
+					if(r <= inVector.Length - indexStartLength[0])
+						indexStartLength[1] = r;
+					else GetRangeSub(inVector, indexStartLength);
+					Console.WriteLine(r);
+			}
+			catch(Exception e) { Console.WriteLine($"ERROR.. {e}"); }
+			
+			int[] result = new int[indexStartLength[1]];
+			int i = indexStartLength[0];
+			for(int j = 0; j < result.Length; j++)
+			{
+				//for (int i = indexStartLength[0]; i < result.Length; i++)
+					result[j] = inVector[i];
+					i++;
+			}
+
+			return result;
+		}
 	}
 }
