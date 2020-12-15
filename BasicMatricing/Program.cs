@@ -8,6 +8,7 @@ using System;
 
 namespace BasicMatricing
 {
+// Goal: get a matrix, print the secondary diagonal line, transpose the matrix and print result, check for identity matrix.
 	class Program
 	{
 		static void Main(string[] args)
@@ -20,6 +21,7 @@ namespace BasicMatricing
 			GetTheMatrix(askMatrix, theMatrix);
 			PrintTheMatrix(theMatrix);
 			
+			FindSecondaryDiagonal(theMatrix);
 			
 			Console.WriteLine("\nEnd.\n");
 		}
@@ -77,5 +79,40 @@ namespace BasicMatricing
 			Console.WriteLine("-----------");
 		}
 
+		private static void FindSecondaryDiagonal(int[,] inMatrix)
+		{
+			if(inMatrix is null) return;
+
+            int coll = inMatrix.GetLength(0); // row length.
+            int rowl = inMatrix.GetLength(1); // column length.
+            int minSize = Math.Min(coll, rowl);
+			Console.WriteLine($"{coll} | {rowl} | {minSize} .");
+
+            Console.WriteLine();
+            Console.WriteLine("Secondary diagonal line:\n-------------------------");
+
+			if(coll == minSize)
+			{
+				int elem = rowl - 1;
+				for(int row = 0; row < minSize; row++)
+				{
+					Console.Write(inMatrix[row, elem]);
+
+					if(row < minSize - 1) { Console.Write(", ");  elem--; }
+				}
+			}
+			else
+			{
+				int elem = rowl - 1;
+				for(int row = 0; row < minSize; row++)
+		        {
+					Console.Write(inMatrix[row, elem]);
+
+					if(row < minSize - 1) { Console.Write(", ");  elem--; }
+				}
+			}
+
+            Console.Write(" .\n");
+		}
 	}
 }
