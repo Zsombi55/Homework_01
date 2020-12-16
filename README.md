@@ -39,6 +39,6 @@ _As I understand the instructions:_ read integers in vector, do calculations/man
 
 > 202012014 ~ 16
 
-* __A6 (BasicMatricing),__ wip.
+* __A6 (BasicMatricing),__ done.
 
 _As I understand the instructions:_ get a matrix, print the secondary diagonal line, transpose the matrix and print result, check for identity matrix.
