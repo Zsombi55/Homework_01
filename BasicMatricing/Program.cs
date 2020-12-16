@@ -25,9 +25,9 @@ namespace BasicMatricing
 
 			SetPrint.PrintTheMatrix(GetTransposed.TransposeMatrix(theMatrix));
 			
+			CheckIdentity.IsIdentity(theMatrix);
+
 			Console.WriteLine("\nEnd.\n");
 		}
-
-		
 	}
 }
