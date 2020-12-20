@@ -43,8 +43,26 @@ _As I understand the instructions:_ store the expected input values in code, ask
 
 _As I understand the instructions:_ read integers in vector, do calculations/manipulations: smallest & largest item index, sort as-& descending, print subvector of even & odd items, print a subvector with items of the original's section starting from a user given index and length; use a function like `string.Substring(index, length)`.
 
-> 202012014 ~ 16
+> 20201214 ~ 16
 
 * __A8 (BasicMatricing),__ done.
 
 _As I understand the instructions:_ get a matrix, print the secondary diagonal line, transpose the matrix and print result, check for identity matrix.
+
+> 20201216 ~ 20210106
+
+* __A9 (ArrayElementSummer),__ done.
+
+_As I understand the instructions:_ get numbers from the user into an array, add the 1st element to 0, add thenext one to it etc., make new array, put results in it, then print it.
+
+* __A10 (IsSubsequence),__ wip.
+
+_As I understand the instructions:_ get 2 int arrays "a" & "b", check if "b"'s elements are part of "a" (in the same order??), true/false.
+
+* __A11 (??),__ wip.
+
+_As I understand the instructions:_ ??.
+
+* __A12 (??),__ wip.
+
+_As I understand the instructions:_ ??.
