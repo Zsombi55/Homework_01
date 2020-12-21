@@ -55,14 +55,14 @@ _As I understand the instructions:_ get a matrix, print the secondary diagonal l
 
 _As I understand the instructions:_ get numbers from the user into an array, add the 1st element to 0, add thenext one to it etc., make new array, put results in it, then print it.
 
-* __A10 (IsSubsequence),__ wip.
+* __A10 (IsSubsequence),__ done.
 
 _As I understand the instructions:_ get 2 int arrays "a" & "b", check if "b"'s elements are part of "a" in the same order !!, true/false.
 
-* __A11 (??),__ wip.
+* __A11 (BasicFindPairs),__ done.
 
-_As I understand the instructions:_ ??.
+_As I understand the instructions:_ get an int array, double iterate: check  i  against  j  (start i+1), while  i < j  , print match count; eg. `1 2 3 1 1 3 = 4 [(0,3),(0,4),(2,5),(3,4)]`.
 
-* __A12 (??),__ wip.
+* __A12 (BasicPathingLabyrinth),__ wip.
 
-_As I understand the instructions:_ ??.
+_As I understand the instructions:_ square map data from txt file into matrix (incl. start point), print the path coordinates to the exit.

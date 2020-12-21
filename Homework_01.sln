@@ -19,9 +19,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicVectoring", "BasicVect
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicMatricing", "BasicMatricing\BasicMatricing.csproj", "{3AADF5D2-EFAE-4848-8526-791E263C6544}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArrayElementSummer", "ArrayElementSummer\ArrayElementSummer.csproj", "{F4E01EFD-D19B-4C9A-87DD-374AA9615E3D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArrayElementSummer", "ArrayElementSummer\ArrayElementSummer.csproj", "{F4E01EFD-D19B-4C9A-87DD-374AA9615E3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IsSubSequence", "IsSubSequence\IsSubSequence.csproj", "{1369A319-2D30-4FBF-A8DC-22B8114E6EA1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IsSubSequence", "IsSubSequence\IsSubSequence.csproj", "{1369A319-2D30-4FBF-A8DC-22B8114E6EA1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicFindPairs", "BasicFindPairs\BasicFindPairs.csproj", "{7FDC8C29-EB7A-481E-B7EE-9BB9E9558394}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +71,10 @@ Global
 		{1369A319-2D30-4FBF-A8DC-22B8114E6EA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1369A319-2D30-4FBF-A8DC-22B8114E6EA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1369A319-2D30-4FBF-A8DC-22B8114E6EA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FDC8C29-EB7A-481E-B7EE-9BB9E9558394}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FDC8C29-EB7A-481E-B7EE-9BB9E9558394}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FDC8C29-EB7A-481E-B7EE-9BB9E9558394}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FDC8C29-EB7A-481E-B7EE-9BB9E9558394}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

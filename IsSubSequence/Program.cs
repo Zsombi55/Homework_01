@@ -2,7 +2,7 @@
  * User: Zsombor
  * Date: 2020-12-20
  * Time: 21:08
- * 8th.
+ * 10th.
  */
 
 // TODO: change thrown exceptions to console writelines and set values to the next or maximum allowed, eg 10 for array length.
