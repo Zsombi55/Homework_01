@@ -6,15 +6,38 @@ namespace BasicPathingLabyrinth
 	class MatrixHelper
 	{
 		public static int[,] ReadMap()
-        {
-			String input = File.ReadAllText(@"../MapData.txt");
+		{
+			/* First check size (1st line Value) to width (2nd line Length) egality else there's no reason to read the rest;
+			 * We need a SQUARE (N x N), not a rectangle (N x M).*/
+			StreamReader readFile = new StreamReader(@"D:\SULI\C# .NET\Homework_01\BasicPathingLabyrinth\MapData.txt");
+			string sizeStr = readFile.ReadLine(); // Reads the first line.
+			if (!int.TryParse(sizeStr, out int size)) throw new Exception($"ERROR..  invalid or no value.");
+			string[] lengthCheck = readFile.ReadLine().Split(" "); // Reads the second line.
+			if (lengthCheck.Length != size) throw new Exception($"ERROR..  the specified size does not match the map length.");
 
-			StreamReader readFile = new StreamReader(@"../MapData.txt");
-			if(int.TryParse(readFile.ReadLine(), out int size)) throw new Exception($"ERROR..  invalid or no value.");
-			string[] lengthCheck = readFile.ReadLine().Split(" ");
-			if(lengthCheck.Length != size) throw new Exception($"ERROR..  the specified size does not match the map length.");
+			//string input = File.ReadAllText(Directory.GetCurrentDirectory()+@"\MapData.txt"); // I didn't want to specify an exact path outside project folder !
+			string input = File.ReadAllText(@"D:\SULI\C# .NET\Homework_01\BasicPathingLabyrinth\MapData.txt");
 			
-			int rowi = 1, coli = 0;
+			int[,] result = new int[size, size];
+			
+			// TODO: get number matrix from txt into integer matrix for use.
+
+/*			while (input != null)
+			{
+				for (int rowi = 1; rowi < size; rowi++)
+				{
+					var v = input.Split(" ");
+					int.TryParse(v, out int[] o);
+					for (int coli = 0; coli < size; coli++)
+					{
+						result[rowi, coli] = o[coli];
+					}
+				}
+			}
+*/
+
+
+/*			int rowi = 1; int coli;
 			int[,] result = new int[size, size];
 			foreach (var row in input.Split("\n"))
 			{
@@ -26,7 +49,7 @@ namespace BasicPathingLabyrinth
 				}
 				rowi++;
 			}
-
+*/
 			return result;
 		}
 	}
