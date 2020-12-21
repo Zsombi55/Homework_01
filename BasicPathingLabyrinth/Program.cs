@@ -15,11 +15,9 @@ namespace BasicPathingLabyrinth
 	{
 		static void Main(string[] args)
 		{
-			
-
 			foreach(var line in MatrixHelper.ReadMap()) Console.WriteLine(string.Join(" ", line));
 
-			Console.WriteLine("Hello World!");
+			Console.WriteLine("\n--------------------\nEnd.\n");
 		}
 
 
