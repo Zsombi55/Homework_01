@@ -22,34 +22,19 @@ namespace BasicPathingLabyrinth
 			
 			// TODO: get number matrix from txt into integer matrix for use.
 
-/*			while (input != null)
+			while (input != null)
 			{
 				for (int rowi = 1; rowi < size; rowi++)
 				{
-					var v = input.Split(" ");
-					int.TryParse(v, out int[] o);
+					string[] sVar = input.Split(" ");
 					for (int coli = 0; coli < size; coli++)
 					{
-						result[rowi, coli] = o[coli];
+						int.TryParse(sVar[coli], out int o);
+						result[rowi, coli] = o;
 					}
 				}
 			}
-*/
 
-
-/*			int rowi = 1; int coli;
-			int[,] result = new int[size, size];
-			foreach (var row in input.Split("\n"))
-			{
-				coli = 0;
-				foreach (var col in row.Trim().Split(" "))
-				{
-					result[rowi, coli] = int.Parse(col.Trim());
-					coli++;
-				}
-				rowi++;
-			}
-*/
 			return result;
 		}
 	}
