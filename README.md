@@ -57,7 +57,7 @@ _As I understand the instructions:_ get numbers from the user into an array, add
 
 * __A10 (IsSubsequence),__ wip.
 
-_As I understand the instructions:_ get 2 int arrays "a" & "b", check if "b"'s elements are part of "a" (in the same order??), true/false.
+_As I understand the instructions:_ get 2 int arrays "a" & "b", check if "b"'s elements are part of "a" in the same order !!, true/false.
 
 * __A11 (??),__ wip.
 
