@@ -65,4 +65,4 @@ _As I understand the instructions:_ get an int array, double iterate: check  i  
 
 * __A12 (BasicPathingLabyrinth),__ wip.
 
-_As I understand the instructions:_ square map data from txt file into matrix (incl. start point), print the path coordinates to the exit.
+_As I understand the instructions:_ "basic labyrinth path finder"; "0" for clear cell, "-1" for wall, "int.MaxValue" for occupied, and "int.MinValue" for exit. Square map data from user-input /txt file into matrix, mark clear cells with values in mirror matrix, using these values find shortest path out, print the path as a list of coordinates.

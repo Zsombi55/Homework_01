@@ -7,56 +7,58 @@ namespace BasicPathingLabyrinth
 	{
 		public static int[,] ReadMap()
 		{
-			string path = @"D:\SULI\C# .NET\Homework_01\BasicPathingLabyrinth\MapData.txt";
+			//string path = @"D:\SULI\C# .NET\Homework_01\BasicPathingLabyrinth\MapData.txt";
+			string path = @"..\..\..\MapData.txt"; // 3 levels
+			//string path = @"MapData.txt"; // MapData -> Properties -> copy always.
 
 			/* First check size (1st line Value) to width (2nd line Length) egality else there's no reason to read the rest;
 			 * We need a SQUARE (N x N), not a rectangle (N x M).*/
-			StreamReader readFile = new StreamReader($"{path}");
-			string sizeStr = readFile.ReadLine(); // Reads the first line.
-			if (!int.TryParse(sizeStr, out int size)) throw new Exception($"ERROR..  invalid or no value.");
-			string[] widthCheck = readFile.ReadLine().Split(" "); // Reads the second line.
-			if (widthCheck.Length != size) throw new Exception($"ERROR..  the specified size does not match the map width.");
-			// TODO: Can the length (row count) be checked without using LINQ ?
-			
-			//string input = File.ReadAllText(Directory.GetCurrentDirectory()+@"\MapData.txt"); // I didn't want to specify an exact path outside project folder !
-			string input = File.ReadAllText($"{path}"); // Each line becomes a string element.
-			
-			int[,] result = new int[size, size];
-			
-			// TODO: get number matrix from txt into integer matrix for use; account for spaces and end of line "  \r\n "-s.
-
-			
-			for(int i = 0; i < input.Length-1; i++)
+			string[] lines = File.ReadAllLines(path);
+			if(lines.Length < 1) // No matrix size.
 			{
-				for(int j = 0; j < input.Length -1; j++)
-					result[i, j] = input[i];
+				throw new Exception("ERROR.. Missing matrix size definition! Verify \"MapData.txt\".");
 			}
-
-/*			while (input != null)
+			
+			if(!int.TryParse(lines[0], out int size)) // Incorrect size value.
 			{
-				for (int rowi = 1; rowi < size-1; rowi++)
+				throw new Exception("ERROR.. Incorrect data! Cannot parse matrix size. Verify \"MapData.txt\".");
+			}
+			
+			if(lines.Length - 1 < size) // Column length does not match given matrix size.
+			{
+				throw new Exception("ERROR.. Row length does not match matrix size! Verify \"MapData.txt\".");
+			}
+			
+			int[,] matrix = new int[size, size];
+			for(int rowi = 0 ; rowi < size; rowi++)
+			{
+				string line = lines[rowi + 1];
+				string[] cells = line.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+
+				if(cells.Length != size) // Column length does not match given matrix size.
 				{
-					string[] sVar = input.Split(" ");
-					for (int coli = 0; coli < size; coli++)
+					throw new Exception("ERROR.. Column length does not match matrix size! Verify \"MapData.txt\".");
+				}
+
+				for(int coli = 0; coli < size; coli++)
+				{
+					if(!int.TryParse(cells[coli], out int cellValue)) // Incorrect or missing map initialization values in "MapData".
 					{
-						int.TryParse(sVar[coli], out int o);
-						result[rowi, coli] = o;
+						throw new Exception("ERROR.. The cell has no initializer value! Verify \"MapData.txt\".");
+					}
+
+					if(cellValue == 0 || cellValue == -1 || cellValue == int.MaxValue || cellValue == int.MinValue)
+					{
+						matrix[rowi, coli] = cellValue;
+					}
+					else // Incorrect or missing map initialization values in "MapData".
+					{
+						throw new Exception("ERROR.. Unsupported map initialization values found! Verify \"MapData.txt\".");
 					}
 				}
 			}
-*/
 
-		/*	for (int rowi = 1; rowi < input.Length-1; ++rowi)
-			{
-				string line = input[rowi].ToString();
-				for (int coli = 0; coli < result.GetLength(1); ++coli)
-				{
-					string[] split = line.Split(" ");
-					result[rowi, coli] = Convert.ToInt32(split[coli]);
-				}
-			}
-    */
-			return result;
+			return matrix;
 		}
 	}
 }
