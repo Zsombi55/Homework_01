@@ -19,6 +19,8 @@ namespace BasicPathingLabyrinth
 			int[] startPosition = Surveyor.GetStartPosition(matrix);
 			int[] endPosition = Surveyor.GetEndPosition(matrix);
 
+			// TODO: transfer all output printer functions into a separate new class, so there's less here.
+
 			PrintHeader(size);
 			for (int rowi = 0; rowi < matrix.GetLength(0); rowi++)
             {
@@ -60,7 +62,7 @@ namespace BasicPathingLabyrinth
 
 			Console.WriteLine("\n--------------------\n");
 
-			//Surveyor.PeekAround(matrix, currentPosition);
+			Surveyor.Surveying(matrix);
 
 			Console.WriteLine("\n--------------------\nEnd.\n");
 		}
