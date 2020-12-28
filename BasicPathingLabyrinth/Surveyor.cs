@@ -56,12 +56,103 @@ namespace BasicPathingLabyrinth
 		}
 
 		/// <summary>
+		/// Check wether where we are looking is inside or out of bounds of the matrix.
+		/// </summary>
+		/// <param name="rowi">Index of rows, vertical traversal.</param>
+		/// <param name="coli">Index of columns, horizontal traversal.</param>
+		/// <returns>If out of bounds (from the matrix), return false.</returns>
+		private static bool isInside(int[,] mapData, int rowi, int coli)
+		{
+			if(rowi < mapData.GetLength(0) && coli < mapData.GetLength(1) && rowi >= 0 && coli >= 0)
+			{
+				return true;
+			}
+			return false;
+		}
+
+		/// <summary>
+		/// Check wether we are looknig at a "wall" (-1) or a "path" (0) cell.
+		/// </summary>
+		/// <param name="mapData">The matrix previously extracted from the input file.</param>
+		/// <param name="surveyData"></param>
+		/// <param name="rowi">Index of rows, vertical traversal.</param>
+		/// <param name="coli">Index of columns, horizontal traversal.</param>
+		/// <returns>A boolean for passable or not.</returns>
+		private static bool isPassable(int[,] mapData, int[,] surveyData, int rowi, int coli)
+		{
+			if(mapData[rowi, coli] != -1 | surveyData[rowi, coli] == 0) // An empty "int[]" element gets a value of "0" by default instead of "null".
+			{
+				return true; // if NOT a "wall" OR if IS marked unvisited THEN passable: True.
+			}
+		    return false;
+		}
+
+
+		/// <summary>
 		/// Look around the current cell clockwise, using the 4 primary directions: up (x, y+1), right (x+1, y), down (x, y-1) and left (x-1, y).
 		/// </summary>
 		/// <param name="mapData">The matrix previously extracted from the input file.</param>
 		/// <returns>The surveyed copy of the map where instead of 0-s the passable cell values are the cell-step distance from the starting cell.</returns>
-		
-		
+		public static void Surveying(int[,] mapData)
+		{
+			int[,] surveyData = new int[mapData.GetLength(0), mapData.GetLength(0)];
+			
+			int[] startPos = new int[2];  int[] endPos = new int[2];  int[] curPos = new int[2]; // Start, End, and Current cell coordinates.
+			startPos = GetStartPosition(mapData);
+			endPos = GetEndPosition(mapData);
+
+			List<int[]> waiting = new List<int[]>(); // Buffer, put here just checked clear cells (did not already have a cost, no walls) to peek around next cycle.
+
+			int srowi = startPos[0];  int scoli = startPos[1];
+			Console.WriteLine($"Start coordinates (x, y): [{scoli}, {srowi}] ;");
+
+			int erowi = endPos[0];  int ecoli = endPos[1];
+			Console.WriteLine($"End coordinates (x, y): [{ecoli}, {erowi}] ;\n");
+			
+			// Set current position to the coordinates where the Survey will start -- by Instructor request from the End Goal ("endPos").
+			curPos = endPos;  int rowi = curPos[0];  int coli = curPos[1];
+			Console.WriteLine($"Current coordinates (x, y): [{coli}, {rowi}] .");
+			
+			{
+				surveyData[rowi, coli] = 0; // Surveyor start coordinate's cell cost.
+
+			}
+/*			
+			if(isInside(mapData, rowi, coli) && isPassable(mapData, surveyData, rowi, coli))
+			{
+				bool ii = isInside(mapData, rowi, coli);
+				bool ip = isPassable(mapData, surveyData, rowi, coli);
+				Console.WriteLine($"\nInside the map? {ii} | Is the cell clear? {ip} .\n"); // Test.
+			}
+*/
+		}
+/*
+	function Surveyor(matrix, _root)
+		let Q be a queue
+		label root as discovered
+		Q.enqueue(root)
+		while Q is not empty do
+			Q.dequeue(v)
+			if v is the goal then
+				return v
+			for all cells from v to w in G.adjacentCells(v) do
+				if w is not labeled as discovered then
+					label w as discovered
+					Q.enqueue(w)
+
+	// if matrix has no embedded _root value ask from User, otherwise the parameter is not required.
+*/
+/*
+		x = coli	y = rowi ::					N ( x , y - 1 )( coli , rowi - 1 )
+																|
+																|
+		W ( x - 1 , y )( coli - 1 , rowi )	----	O ( x , y )( coli , rowi )	----	E ( x + 1 , y )( coli + 1 , rowi )
+																|
+																|
+												S ( x , y + 1 )( coli , rowi + 1 )
+*/
+
+/*
 		public static void Surveying(int[,] mapData)
 		{
 			int[,] surveyData = new int[mapData.GetLength(0), mapData.GetLength(0)];
@@ -112,8 +203,8 @@ namespace BasicPathingLabyrinth
 				}
 			} while ((rowi > 0 && rowi < mapData.Length) && (coli > 0 && coli < mapData.Length));
 			Console.WriteLine($"End coordinates (x, y): [{coli}, {rowi}] .");
-		}
-
+		}*/
+/*
 		private static List<int[]> PeekAround(List<int[]> toPeek, int[,] _mapData)
 		{
 			foreach(int[] elem in toPeek)
@@ -124,5 +215,6 @@ namespace BasicPathingLabyrinth
 			
 			return toPeek;
 		}
+*/
 	}
 }
