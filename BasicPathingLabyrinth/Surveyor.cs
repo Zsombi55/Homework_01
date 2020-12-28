@@ -87,6 +87,16 @@ namespace BasicPathingLabyrinth
 		    return false;
 		}
 
+		// Temp, may not keep this.
+		private static int findMinDist(int dist, int minDist, int srowi, int scoli, int rowi, int coli)
+		{
+			if (rowi == srowi && coli == scoli)
+			{
+			    minDist = Math.Min(dist, minDist);
+			    return minDist;
+			}
+			return 0;
+		}
 
 		/// <summary>
 		/// Look around the current cell clockwise, using the 4 primary directions: up (x, y+1), right (x+1, y), down (x, y-1) and left (x-1, y).
@@ -96,12 +106,13 @@ namespace BasicPathingLabyrinth
 		public static void Surveying(int[,] mapData)
 		{
 			int[,] surveyData = new int[mapData.GetLength(0), mapData.GetLength(0)];
+			int minDist = 0;  int dist = 0;
 			
 			int[] startPos = new int[2];  int[] endPos = new int[2];  int[] curPos = new int[2]; // Start, End, and Current cell coordinates.
 			startPos = GetStartPosition(mapData);
 			endPos = GetEndPosition(mapData);
 
-			List<int[]> waiting = new List<int[]>(); // Buffer, put here just checked clear cells (did not already have a cost, no walls) to peek around next cycle.
+			Queue<int[]> waiting = new Queue<int[]>(); // Buffer, put here just checked clear cells (did not already have a cost, no walls) to peek around next cycle.
 
 			int srowi = startPos[0];  int scoli = startPos[1];
 			Console.WriteLine($"Start coordinates (x, y): [{scoli}, {srowi}] ;");
@@ -112,10 +123,28 @@ namespace BasicPathingLabyrinth
 			// Set current position to the coordinates where the Survey will start -- by Instructor request from the End Goal ("endPos").
 			curPos = endPos;  int rowi = curPos[0];  int coli = curPos[1];
 			Console.WriteLine($"Current coordinates (x, y): [{coli}, {rowi}] .");
-			
-			{
-				surveyData[rowi, coli] = 0; // Surveyor start coordinate's cell cost.
+			int[] lookAround = new int[2];  int[] lookingAt = new int[2];
 
+			surveyData[rowi, coli] = 0; // Surveyor start coordinate's cell cost ; also the first discovered cell.
+			waiting.Enqueue(curPos);
+			while(waiting.Count != 0)
+			{
+				lookAround = waiting.Dequeue();
+				if(lookAround == startPos)
+				{
+					//return lookAround;
+					Console.WriteLine($"Found Start coordinates (x, y): [{lookAround[1]} , {lookAround[0]}] .");
+					break;
+				}
+				//	for all cells from "lookAround" to "lookingAt" in matrix.adjacentCells("lookAround") do
+				//		if "lookingAt" is not labeled as discovered then
+				//			label "lookingAt" as discovered
+				//			Q.enqueue("lookingAt")
+
+				for(int i = 1; i <= 4; i++)
+				{
+					
+				}
 			}
 /*			
 			if(isInside(mapData, rowi, coli) && isPassable(mapData, surveyData, rowi, coli))
@@ -203,17 +232,6 @@ namespace BasicPathingLabyrinth
 				}
 			} while ((rowi > 0 && rowi < mapData.Length) && (coli > 0 && coli < mapData.Length));
 			Console.WriteLine($"End coordinates (x, y): [{coli}, {rowi}] .");
-		}*/
-/*
-		private static List<int[]> PeekAround(List<int[]> toPeek, int[,] _mapData)
-		{
-			foreach(int[] elem in toPeek)
-			{
-				//
-			}
-			toPeek.Clear();
-			
-			return toPeek;
 		}
 */
 	}
