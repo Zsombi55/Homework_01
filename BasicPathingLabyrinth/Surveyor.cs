@@ -123,17 +123,18 @@ namespace BasicPathingLabyrinth
 			// Set current position to the coordinates where the Survey will start -- by Instructor request from the End Goal ("endPos").
 			curPos = endPos;  int rowi = curPos[0];  int coli = curPos[1];
 			Console.WriteLine($"Current coordinates (x, y): [{coli}, {rowi}] .");
-			int[] lookAround = new int[2];  int[] lookingAt = new int[2];
+			//int[] lookAround = new int[2];
+			int[] lookingAt = new int[2];
 
 			surveyData[rowi, coli] = 0; // Surveyor start coordinate's cell cost ; also the first discovered cell.
 			waiting.Enqueue(curPos);
 			while(waiting.Count != 0)
 			{
-				lookAround = waiting.Dequeue();
-				if(lookAround == startPos)
+				curPos = waiting.Dequeue();
+				if(curPos == startPos)
 				{
 					//return lookAround;
-					Console.WriteLine($"Found Start coordinates (x, y): [{lookAround[1]} , {lookAround[0]}] .");
+					Console.WriteLine($"Found Start coordinates (x, y): [{curPos[1]} , {curPos[0]}] .");
 					break;
 				}
 				//	for all cells from "lookAround" to "lookingAt" in matrix.adjacentCells("lookAround") do
@@ -141,16 +142,28 @@ namespace BasicPathingLabyrinth
 				//			label "lookingAt" as discovered
 				//			Q.enqueue("lookingAt")
 
-				for(int i = 1; i <= 4; i++)
+				int[] xi = {-1, 0, 1, 0};  int[] yi = {0, 1, 0, -1}; // Looking directions.
+				
+				for(int cy = 0; cy < 4; cy++) // Looking cycle: up, right, down, left.
 				{
-					
+					//> select looking direction
+					//> WHILE goal not found DO
+					//>		IF isInside && isValid
+					//>			IF lookingAt x,y == endPos x,y
+					//>				weight lookingAT x,y
+					//>				goto End:
+					//>			weight lookingAT x,y
+					//>			enqueue lookingAT x,y
 				}
 			}
+					//> End: print out weighted matrix
+					//> go through weighted matrix looking for shortest path
+					//> print original matrix highlighting shortest path
+					//> End App.
 /*			
 			if(isInside(mapData, rowi, coli) && isPassable(mapData, surveyData, rowi, coli))
 			{
-				bool ii = isInside(mapData, rowi, coli);
-				bool ip = isPassable(mapData, surveyData, rowi, coli);
+				bool ii = isInside(mapData, rowi, coli);  bool ip = isPassable(mapData, surveyData, rowi, coli);
 				Console.WriteLine($"\nInside the map? {ii} | Is the cell clear? {ip} .\n"); // Test.
 			}
 */
