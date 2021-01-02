@@ -122,30 +122,32 @@ namespace BasicPathingLabyrinth
 			
 			// Set current position to the coordinates where the Survey will start -- by Instructor request from the End Goal ("endPos").
 			curPos = endPos;  int rowi = curPos[0];  int coli = curPos[1];
-			Console.WriteLine($"Current coordinates (x, y): [{coli}, {rowi}] .");
-			//int[] lookAround = new int[2];
+			Console.WriteLine($"Current coordinates (x, y): [{coli}, {rowi}] .\n");
 			int[] lookingAt = new int[2];
+			int xi = lookingAt[0];  int yi = lookingAt[1];
 
 			surveyData[rowi, coli] = 0; // Surveyor start coordinate's cell cost ; also the first discovered cell.
 			waiting.Enqueue(curPos);
 			while(waiting.Count != 0)
 			{
-				curPos = waiting.Dequeue();
-				if(curPos == startPos)
-				{
-					//return lookAround;
-					Console.WriteLine($"Found Start coordinates (x, y): [{curPos[1]} , {curPos[0]}] .");
-					break;
-				}
-				//	for all cells from "lookAround" to "lookingAt" in matrix.adjacentCells("lookAround") do
+				curPos = waiting.Dequeue(); // Take the next one from the queue as the current position to look around.
+				
+				//	for all cells from "curPos" to "lookingAt" in matrix.adjacentCells("curPos") do
 				//		if "lookingAt" is not labeled as discovered then
 				//			label "lookingAt" as discovered
 				//			Q.enqueue("lookingAt")
 
-				int[] xi = {-1, 0, 1, 0};  int[] yi = {0, 1, 0, -1}; // Looking directions.
+				//int[] xi = {-1, 0, 1, 0};  int[] yi = {0, 1, 0, -1}; // Looking directions.
 				
-				for(int cy = 0; cy < 4; cy++) // Looking cycle: up, right, down, left.
+				for(int cy = 1; cy <= 4; cy++) // Looking cycle: up, right, down, left.
 				{
+					Console.WriteLine($"Current coordinates to look around (x, y): [{coli}, {rowi}] .");
+					var lookAroundTuple = looking(rowi, coli, lookingAt, cy, xi, yi);
+					lookingAt = lookAroundTuple.Item1;  xi = lookAroundTuple.Item2;  yi = lookAroundTuple.Item3;
+					//Console.WriteLine($"The  lookingAtCor  coordinates POST--AFTER--SWITCH ONE: {string.Join(", ", looking(rowi, coli, lookingAt, cy, xi, yi))} .");
+					Console.WriteLine($"The  lookingAtCor  coordinates POST--AFTER--SWITCH TWO: {string.Join(", ", lookingAt)} .");
+					
+					Console.WriteLine($"Now looking at direction {cy} starting clockwise, its coordinates (x, y) are: [{xi}, {yi}] .");
 					//> select looking direction
 					//> WHILE goal not found DO
 					//>		IF isInside && isValid
@@ -193,6 +195,44 @@ namespace BasicPathingLabyrinth
 																|
 												S ( x , y + 1 )( coli , rowi + 1 )
 */
+
+		private static Tuple<int[], int, int> looking(int currentRowi, int currentColi, int[] lookAtCor, int turnCycle, int lookingXi, int lookingYi)
+		{
+			//Console.WriteLine($"Current coordinates to look around (x, y), PRE--SWITCH-CHECK: [{currentColi}, {currentRowi}] .");
+			switch (turnCycle)
+			{
+				// Up.
+				case 1:
+				{
+					lookingXi = currentRowi - 1; lookingYi = currentColi;
+					break;
+				};
+				// Right.
+				case 2:
+				{
+					lookingXi = currentRowi; lookingYi = currentColi + 1;
+					break;
+				};
+				// Down.
+				case 3:
+				{
+					lookingXi = currentRowi + 1; lookingYi = currentColi;
+					break;
+				};
+				// Left.
+				case 4:
+				{
+					lookingXi = currentRowi; lookingYi = currentColi - 1;
+					break;
+				};
+
+				//default:  break;
+			}
+			lookAtCor[0] = lookingXi;  lookAtCor[1] = lookingYi;
+			//Console.WriteLine($"Current coordinates to look around (x, y), POST--SWITCH-CHECK: [{lookingYi}, {lookingXi}] .");
+			//Console.WriteLine($"The  lookingAtCor  coordinates POST--SWITCH: {string.Join(", ", lookAtCor)} .");
+			return new Tuple<int[], int, int> (lookAtCor, lookingXi, lookingYi);
+		}
 
 /*
 		public static void Surveying(int[,] mapData)
