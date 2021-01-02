@@ -5,6 +5,8 @@ namespace BasicPathingLabyrinth
 {
 	class Surveyor
 	{
+	// For the standard  X, Y  coordinate system: row index /rowi = X and column index /coli = Y	|	x = coli | y = rowi .
+
 		/// <summary>
 		/// Get the start position coordinates.
 		/// </summary>
@@ -63,6 +65,8 @@ namespace BasicPathingLabyrinth
 		/// <returns>If out of bounds (from the matrix), return false.</returns>
 		private static bool isInside(int[,] mapData, int rowi, int coli)
 		{
+			Console.WriteLine($"ROWI {rowi} | MapData X Length {mapData.GetLength(0)} |\n" +
+								$"COLI {coli} | MapData Y Length {mapData.GetLength(1)} |\n");
 			if(rowi < mapData.GetLength(0) && coli < mapData.GetLength(1) && rowi >= 0 && coli >= 0)
 			{
 				return true;
@@ -80,10 +84,12 @@ namespace BasicPathingLabyrinth
 		/// <returns>A boolean for passable or not.</returns>
 		private static bool isPassable(int[,] mapData, int[,] surveyData, int rowi, int coli)
 		{
-			if(mapData[rowi, coli] != -1 | surveyData[rowi, coli] == 0) // An empty "int[]" element gets a value of "0" by default instead of "null".
+			if(mapData[rowi, coli] != -1 && surveyData[rowi, coli] == 0) // An empty "int[]" element gets a value of "0" by default instead of "null".
 			{
+				Console.WriteLine($"ROWI {rowi} | COLI {coli} | MapData {mapData[rowi, coli]} | SurveyData {surveyData[rowi, coli]} .\n");
 				return true; // if NOT a "wall" OR if IS marked unvisited THEN passable: True.
 			}
+			Console.WriteLine($"ROWI {rowi} | COLI {coli} | MapData {mapData[rowi, coli]} | SurveyData {surveyData[rowi, coli]} .\n");
 		    return false;
 		}
 
@@ -132,43 +138,41 @@ namespace BasicPathingLabyrinth
 			{
 				curPos = waiting.Dequeue(); // Take the next one from the queue as the current position to look around.
 				
-				//	for all cells from "curPos" to "lookingAt" in matrix.adjacentCells("curPos") do
-				//		if "lookingAt" is not labeled as discovered then
-				//			label "lookingAt" as discovered
-				//			Q.enqueue("lookingAt")
-
-				//int[] xi = {-1, 0, 1, 0};  int[] yi = {0, 1, 0, -1}; // Looking directions.
-				
 				for(int cy = 1; cy <= 4; cy++) // Looking cycle: up, right, down, left.
 				{
 					Console.WriteLine($"Current coordinates to look around (x, y): [{coli}, {rowi}] .");
-					var lookAroundTuple = looking(rowi, coli, lookingAt, cy, xi, yi);
-					lookingAt = lookAroundTuple.Item1;  xi = lookAroundTuple.Item2;  yi = lookAroundTuple.Item3;
-					//Console.WriteLine($"The  lookingAtCor  coordinates POST--AFTER--SWITCH ONE: {string.Join(", ", looking(rowi, coli, lookingAt, cy, xi, yi))} .");
-					Console.WriteLine($"The  lookingAtCor  coordinates POST--AFTER--SWITCH TWO: {string.Join(", ", lookingAt)} .");
+					lookingAt = looking(rowi, coli, lookingAt, cy);					
+					//Console.WriteLine($"The  lookingAtCor  coordinates POST--AFTER--SWITCH TWO: {string.Join(", ", lookingAt)} .");
+					xi = lookingAt[0];  yi = lookingAt[1];
+					Console.WriteLine($"Now looking at direction {cy} starting clockwise, its coordinates (x, y) are: [{yi}, {xi}] .");
+					//while(xi != srowi && yi != scoli)
+					//{
+						bool ii = isInside(mapData, xi, yi);  bool ip;
+						if(ii == false) ip = false;  else ip = isPassable(mapData, surveyData, xi, yi);
 					
-					Console.WriteLine($"Now looking at direction {cy} starting clockwise, its coordinates (x, y) are: [{xi}, {yi}] .");
-					//> select looking direction
-					//> WHILE goal not found DO
-					//>		IF isInside && isValid
-					//>			IF lookingAt x,y == endPos x,y
-					//>				weight lookingAT x,y
-					//>				goto End:
-					//>			weight lookingAT x,y
-					//>			enqueue lookingAT x,y
+						Console.WriteLine($"\nVALIDATE ONE: Inside the map? {ii} | Is the cell clear AND unvisited? {ip} .\n"); // Test.
+						//if(isInside(mapData, xi, yi) == true && isPassable(mapData, surveyData, xi, yi) == true)
+						if(ii == true && ip == true)
+						{
+							Console.WriteLine($"\nVALIDATE TWO: Inside the map? {ii} | Is the cell clear AND unvisited? {ip} .\n"); // Test.
+							
+							//if(lookingAt == startPos)
+							if(xi != srowi && yi != scoli)
+							{
+								surveyData[xi, yi] = surveyData[rowi, coli] + 1;
+								goto End;
+							}
+							surveyData[xi, yi] = surveyData[rowi, coli] + 1;
+							waiting.Enqueue(lookingAt); // Place what was just marked in the queue to be looked around later.
+						}
+					//}
 				}
 			}
-					//> End: print out weighted matrix
-					//> go through weighted matrix looking for shortest path
-					//> print original matrix highlighting shortest path
-					//> End App.
-/*			
-			if(isInside(mapData, rowi, coli) && isPassable(mapData, surveyData, rowi, coli))
-			{
-				bool ii = isInside(mapData, rowi, coli);  bool ip = isPassable(mapData, surveyData, rowi, coli);
-				Console.WriteLine($"\nInside the map? {ii} | Is the cell clear? {ip} .\n"); // Test.
-			}
-*/
+			End:  Console.WriteLine("print out weighted matrix");
+					
+			//> go through weighted matrix looking for shortest path
+			//> print original matrix highlighting shortest path
+			//> End App.
 		}
 /*
 	function Surveyor(matrix, _root)
@@ -184,10 +188,10 @@ namespace BasicPathingLabyrinth
 					label w as discovered
 					Q.enqueue(w)
 
-	// if matrix has no embedded _root value ask from User, otherwise the parameter is not required.
+	// if matrix has no embedded _root value ask from User, otherwise (like in this app.) the parameter is not required.
 */
 /*
-		x = coli	y = rowi ::					N ( x , y - 1 )( coli , rowi - 1 )
+		x = coli	y = rowi					N ( x , y - 1 )( coli , rowi - 1 )
 																|
 																|
 		W ( x - 1 , y )( coli - 1 , rowi )	----	O ( x , y )( coli , rowi )	----	E ( x + 1 , y )( coli + 1 , rowi )
@@ -195,8 +199,15 @@ namespace BasicPathingLabyrinth
 																|
 												S ( x , y + 1 )( coli , rowi + 1 )
 */
-
-		private static Tuple<int[], int, int> looking(int currentRowi, int currentColi, int[] lookAtCor, int turnCycle, int lookingXi, int lookingYi)
+		/// <summary>
+		/// Switch looking directions relative to the current cell coordinates.
+		/// </summary>
+		/// <param name="currentRowi">Current cell row index.</param>
+		/// <param name="currentColi">Current cell column index.</param>
+		/// <param name="lookAtCor">Coordinate pair of the cell we are to look at after the switch.</param>
+		/// <param name="turnCycle">The number of the current direction; we always look around.</param>
+		/// <returns></returns>
+		private static int[] looking(int currentRowi, int currentColi, int[] lookAtCor, int turnCycle)
 		{
 			//Console.WriteLine($"Current coordinates to look around (x, y), PRE--SWITCH-CHECK: [{currentColi}, {currentRowi}] .");
 			switch (turnCycle)
@@ -204,88 +215,32 @@ namespace BasicPathingLabyrinth
 				// Up.
 				case 1:
 				{
-					lookingXi = currentRowi - 1; lookingYi = currentColi;
+					lookAtCor[0] = currentRowi - 1; lookAtCor[1] = currentColi;
 					break;
 				};
 				// Right.
 				case 2:
 				{
-					lookingXi = currentRowi; lookingYi = currentColi + 1;
+					lookAtCor[0] = currentRowi; lookAtCor[1] = currentColi + 1;
 					break;
 				};
 				// Down.
 				case 3:
 				{
-					lookingXi = currentRowi + 1; lookingYi = currentColi;
+					lookAtCor[0] = currentRowi + 1; lookAtCor[1] = currentColi;
 					break;
 				};
 				// Left.
 				case 4:
 				{
-					lookingXi = currentRowi; lookingYi = currentColi - 1;
+					lookAtCor[0] = currentRowi; lookAtCor[1] = currentColi - 1;
 					break;
 				};
 
 				//default:  break;
 			}
-			lookAtCor[0] = lookingXi;  lookAtCor[1] = lookingYi;
-			//Console.WriteLine($"Current coordinates to look around (x, y), POST--SWITCH-CHECK: [{lookingYi}, {lookingXi}] .");
 			//Console.WriteLine($"The  lookingAtCor  coordinates POST--SWITCH: {string.Join(", ", lookAtCor)} .");
-			return new Tuple<int[], int, int> (lookAtCor, lookingXi, lookingYi);
+			return lookAtCor;
 		}
-
-/*
-		public static void Surveying(int[,] mapData)
-		{
-			int[,] surveyData = new int[mapData.GetLength(0), mapData.GetLength(0)];
-			
-			int[] startPos = new int[2];  int[] endPos = new int[2];
-			startPos = GetStartPosition(mapData);
-			endPos = GetEndPosition(mapData);
-
-			List<int[]> onHold = new List<int[]>();
-
-	// For the standard  X, Y  coordinate system: row index /rowi = X and column index /coli = Y	|	x = coli | y = rowi
-			int rowi = startPos[0];  int coli = startPos[1];
-			surveyData[rowi, coli] = 0;
-			Console.WriteLine($"The End.\nStart coordinates (x, y): [{coli}, {rowi}] ;\n");
-			do
-			{	// check if it's a free cell.
-				if(mapData[rowi - 1, coli] == 0)
-				{
-					surveyData[rowi - 1, coli] = mapData[rowi - 1, coli] + 1;
-				}
-				else if(mapData[rowi, coli + 1] == 0)
-				{
-					surveyData[rowi, coli + 1] = mapData[rowi, coli + 1] + 1;
-				}
-				else if(mapData[rowi + 1, coli] == 0)
-				{
-					surveyData[rowi + 1, coli] = mapData[rowi + 1, coli] + 1;
-				}
-				else if(mapData[rowi, coli - 1] == 0)
-				{
-					surveyData[rowi, coli - 1] = mapData[rowi, coli - 1] + 1;
-				} else // now check if it's the exit.
-				if(mapData[rowi - 1, coli] == 2)
-				{
-					surveyData[rowi - 1, coli] = mapData[rowi - 1, coli] + 1;  break;
-				}
-				else if(mapData[rowi, coli + 1] == 2)
-				{
-					surveyData[rowi, coli + 1] = mapData[rowi, coli + 1] + 1;  break;
-				}
-				else if(mapData[rowi + 1, coli] == 2)
-				{
-					surveyData[rowi + 1, coli] = mapData[rowi + 1, coli] + 1;  break;
-				}
-				else if(mapData[rowi, coli - 1] == 2)
-				{
-					surveyData[rowi, coli - 1] = mapData[rowi, coli - 1] + 1;  break;
-				}
-			} while ((rowi > 0 && rowi < mapData.Length) && (coli > 0 && coli < mapData.Length));
-			Console.WriteLine($"End coordinates (x, y): [{coli}, {rowi}] .");
-		}
-*/
 	}
 }
