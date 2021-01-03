@@ -58,53 +58,6 @@ namespace BasicPathingLabyrinth
 		}
 
 		/// <summary>
-		/// Check wether where we are looking is inside or out of bounds of the matrix.
-		/// </summary>
-		/// <param name="rowi">Index of rows, vertical traversal.</param>
-		/// <param name="coli">Index of columns, horizontal traversal.</param>
-		/// <returns>If out of bounds (from the matrix), return false.</returns>
-		private static bool isInside(int[,] mapData, int rowi, int coli)
-		{
-			Console.WriteLine($"ROWI {rowi} | MapData X Length {mapData.GetLength(0)} |\n" +
-								$"COLI {coli} | MapData Y Length {mapData.GetLength(1)} |\n");
-			if(rowi < mapData.GetLength(0) && coli < mapData.GetLength(1) && rowi >= 0 && coli >= 0)
-			{
-				return true;
-			}
-			return false;
-		}
-
-		/// <summary>
-		/// Check wether we are looknig at a "wall" (-1) or a "path" (0) cell.
-		/// </summary>
-		/// <param name="mapData">The matrix previously extracted from the input file.</param>
-		/// <param name="surveyData"></param>
-		/// <param name="rowi">Index of rows, vertical traversal.</param>
-		/// <param name="coli">Index of columns, horizontal traversal.</param>
-		/// <returns>A boolean for passable or not.</returns>
-		private static bool isPassable(int[,] mapData, int[,] surveyData, int rowi, int coli)
-		{
-			if(mapData[rowi, coli] != -1 && surveyData[rowi, coli] == 0) // An empty "int[]" element gets a value of "0" by default instead of "null".
-			{
-				Console.WriteLine($"ROWI {rowi} | COLI {coli} | MapData {mapData[rowi, coli]} | SurveyData {surveyData[rowi, coli]} .\n");
-				return true; // if NOT a "wall" OR if IS marked unvisited THEN passable: True.
-			}
-			Console.WriteLine($"ROWI {rowi} | COLI {coli} | MapData {mapData[rowi, coli]} | SurveyData {surveyData[rowi, coli]} .\n");
-		    return false;
-		}
-
-		// Temp, may not keep this.
-		private static int findMinDist(int dist, int minDist, int srowi, int scoli, int rowi, int coli)
-		{
-			if (rowi == srowi && coli == scoli)
-			{
-			    minDist = Math.Min(dist, minDist);
-			    return minDist;
-			}
-			return 0;
-		}
-
-		/// <summary>
 		/// Look around the current cell clockwise, using the 4 primary directions: up (x, y+1), right (x+1, y), down (x, y-1) and left (x-1, y).
 		/// </summary>
 		/// <param name="mapData">The matrix previously extracted from the input file.</param>
@@ -112,7 +65,8 @@ namespace BasicPathingLabyrinth
 		public static void Surveying(int[,] mapData)
 		{
 			int[,] surveyData = new int[mapData.GetLength(0), mapData.GetLength(0)];
-			int minDist = 0;  int dist = 0;
+			addDummySurveyData(surveyData);
+			//int minDist = 0;  int dist = 0;
 			
 			int[] startPos = new int[2];  int[] endPos = new int[2];  int[] curPos = new int[2]; // Start, End, and Current cell coordinates.
 			startPos = GetStartPosition(mapData);
@@ -136,8 +90,10 @@ namespace BasicPathingLabyrinth
 			waiting.Enqueue(curPos);
 			while(waiting.Count != 0)
 			{
-				curPos = waiting.Dequeue(); // Take the next one from the queue as the current position to look around.
-				
+				//curPos = waiting.Dequeue(); // Take the next one from the queue as the current position to look around.
+				Array.Copy(waiting.Dequeue(), curPos, 2);
+				rowi = curPos[0];  coli = curPos[1];
+
 				for(int cy = 1; cy <= 4; cy++) // Looking cycle: up, right, down, left.
 				{
 					Console.WriteLine($"Current coordinates to look around (x, y): [{coli}, {rowi}] .");
@@ -145,31 +101,41 @@ namespace BasicPathingLabyrinth
 					//Console.WriteLine($"The  lookingAtCor  coordinates POST--AFTER--SWITCH TWO: {string.Join(", ", lookingAt)} .");
 					xi = lookingAt[0];  yi = lookingAt[1];
 					Console.WriteLine($"Now looking at direction {cy} starting clockwise, its coordinates (x, y) are: [{yi}, {xi}] .");
-					//while(xi != srowi && yi != scoli)
-					//{
-						bool ii = isInside(mapData, xi, yi);  bool ip;
-						if(ii == false) ip = false;  else ip = isPassable(mapData, surveyData, xi, yi);
 					
-						Console.WriteLine($"\nVALIDATE ONE: Inside the map? {ii} | Is the cell clear AND unvisited? {ip} .\n"); // Test.
-						//if(isInside(mapData, xi, yi) == true && isPassable(mapData, surveyData, xi, yi) == true)
-						if(ii == true && ip == true)
+					bool ii = isInside(mapData, xi, yi);  bool ip;
+					if(ii == false) ip = false;  else ip = isPassable(mapData, surveyData, xi, yi);
+					
+					Console.WriteLine($"\nVALIDATE ONE: Inside the map? {ii} | Is the cell clear AND unvisited? {ip} .\n"); // Test.
+					//if(isInside(mapData, xi, yi) == true && isPassable(mapData, surveyData, xi, yi) == true) //-- for some reason the short-circuiting didn't work.
+					if(ii == true && ip == true)
+					{
+						//if(lookingAt == startPos)
+						if(xi == srowi && yi == scoli)
 						{
-							Console.WriteLine($"\nVALIDATE TWO: Inside the map? {ii} | Is the cell clear AND unvisited? {ip} .\n"); // Test.
-							
-							//if(lookingAt == startPos)
-							if(xi != srowi && yi != scoli)
+							if(surveyData[rowi, coli] + 1 <= int.MaxValue)
 							{
 								surveyData[xi, yi] = surveyData[rowi, coli] + 1;
 								goto End;
 							}
-							surveyData[xi, yi] = surveyData[rowi, coli] + 1;
-							waiting.Enqueue(lookingAt); // Place what was just marked in the queue to be looked around later.
+							else throw new OverflowException("ERROR.. There are too many cells to map with BFS.");
 						}
-					//}
+						if(surveyData[rowi, coli] + 1 <= int.MaxValue)
+						{
+							surveyData[xi, yi] = surveyData[rowi, coli] + 1;
+							//waiting.Enqueue(lookingAt); // Place what was just marked in the queue to be looked around later.
+							int[] t = new int[2];  Array.Copy(lookingAt, t, lookingAt.Length);
+							waiting.Enqueue(t);
+						}
+						else throw new OverflowException("ERROR.. There are too many cells to map with BFS.");
+					}
 				}
 			}
-			End:  Console.WriteLine("print out weighted matrix");
-					
+			End:  //Console.WriteLine($"Print out weighted matrix; {yi}, {xi} .");
+			if(xi == srowi && yi == scoli)
+			{
+				Console.WriteLine($"FINALLY.. Print out weighted matrix; {yi}, {xi} .");
+			}
+			else Console.WriteLine("TEST, ERROR.. survey prematurely stopped without causing an Exception. Check the code!");
 			//> go through weighted matrix looking for shortest path
 			//> print original matrix highlighting shortest path
 			//> End App.
@@ -187,8 +153,6 @@ namespace BasicPathingLabyrinth
 				if w is not labeled as discovered then
 					label w as discovered
 					Q.enqueue(w)
-
-	// if matrix has no embedded _root value ask from User, otherwise (like in this app.) the parameter is not required.
 */
 /*
 		x = coli	y = rowi					N ( x , y - 1 )( coli , rowi - 1 )
@@ -199,6 +163,42 @@ namespace BasicPathingLabyrinth
 																|
 												S ( x , y + 1 )( coli , rowi + 1 )
 */
+		/// <summary>
+		/// Check wether where we are looking is inside or out of bounds of the matrix.
+		/// </summary>
+		/// <param name="rowi">Index of rows, vertical traversal.</param>
+		/// <param name="coli">Index of columns, horizontal traversal.</param>
+		/// <returns>If out of bounds (from the matrix), return false.</returns>
+		private static bool isInside(int[,] mapData, int rowi, int coli)
+		{
+			Console.WriteLine($"ROWI {rowi} | MapData X Length {mapData.GetLength(0)} |\n" +
+								$"COLI {coli} | MapData Y Length {mapData.GetLength(1)} |\n");
+			if(rowi < mapData.GetLength(0) && coli < mapData.GetLength(1) && rowi >= 0 && coli >= 0)
+			{
+				return true;
+			}
+			return false;
+		}
+
+		/// <summary>
+		/// Check wether we are looknig at a "wall" (-1) or a "path" (0) cell.
+		/// </summary>
+		/// <param name="mapData">The matrix previously extracted from the input file.</param>
+		/// <param name="surveyData">A mirror map matrix where temporary background data will be stored.</param>
+		/// <param name="rowi">Index of rows, vertical traversal.</param>
+		/// <param name="coli">Index of columns, horizontal traversal.</param>
+		/// <returns>A boolean for passable or not.</returns>
+		private static bool isPassable(int[,] mapData, int[,] surveyData, int rowi, int coli)
+		{
+			if(mapData[rowi, coli] != -1 && surveyData[rowi, coli] == -1)
+			{
+				Console.WriteLine($"ROWI {rowi} | COLI {coli} | MapData {mapData[rowi, coli]} | SurveyData {surveyData[rowi, coli]} .\n");
+				return true; // if NOT a "wall" OR if IS marked unvisited (cell value IS NOT int.MinValue) THEN passable: True.
+			}
+			Console.WriteLine($"ROWI {rowi} | COLI {coli} | MapData {mapData[rowi, coli]} | SurveyData {surveyData[rowi, coli]} .\n");
+		    return false;
+		}
+
 		/// <summary>
 		/// Switch looking directions relative to the current cell coordinates.
 		/// </summary>
@@ -242,5 +242,32 @@ namespace BasicPathingLabyrinth
 			//Console.WriteLine($"The  lookingAtCor  coordinates POST--SWITCH: {string.Join(", ", lookAtCor)} .");
 			return lookAtCor;
 		}
+
+		/// <summary>
+		/// Fill the mirror map data with values to mark unvisited cells.
+		/// </summary>
+		/// <param name="surveyThis">A mirror map matrix where temporary background data will be stored.</param>
+		private static void addDummySurveyData(int[,] surveyThis)
+		{
+			for(int i = 0; i < surveyThis.GetLength(0); i++)
+			{
+				for(int j = 0; j < surveyThis.GetLength(1); j++)
+				{
+					surveyThis[i, j] = -1;
+				}
+			}
+		}
+
+/*		// Temp, may not keep this.
+		private static int findMinDist(int dist, int minDist, int srowi, int scoli, int rowi, int coli)
+		{
+			if (rowi == srowi && coli == scoli)
+			{
+			    minDist = Math.Min(dist, minDist);
+			    return minDist;
+			}
+			return 0;
+		}
+*/
 	}
 }
