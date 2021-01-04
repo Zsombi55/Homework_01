@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 
 namespace BasicPathingLabyrinth
-{
+{ // TODO: clean up this mess, both code and output, it's hard to read.
+// TODO: add an exception for the event that the desired start and end positions cannot be connected without jumping over "impassable" cells.
 	class Surveyor
 	{
 	// For the standard  X, Y  coordinate system: row index /rowi = X and column index /coli = Y	|	x = coli | y = rowi .
@@ -62,11 +63,10 @@ namespace BasicPathingLabyrinth
 		/// </summary>
 		/// <param name="mapData">The matrix previously extracted from the input file.</param>
 		/// <returns>The surveyed copy of the map where instead of 0-s the passable cell values are the cell-step distance from the starting cell.</returns>
-		public static void Surveying(int[,] mapData)
+		public static int[,] Surveying(int[,] mapData)
 		{
 			int[,] surveyData = new int[mapData.GetLength(0), mapData.GetLength(0)];
 			addDummySurveyData(surveyData);
-			//int minDist = 0;  int dist = 0;
 			
 			int[] startPos = new int[2];  int[] endPos = new int[2];  int[] curPos = new int[2]; // Start, End, and Current cell coordinates.
 			startPos = GetStartPosition(mapData);
@@ -75,14 +75,14 @@ namespace BasicPathingLabyrinth
 			Queue<int[]> waiting = new Queue<int[]>(); // Buffer, put here just checked clear cells (did not already have a cost, no walls) to peek around next cycle.
 
 			int srowi = startPos[0];  int scoli = startPos[1];
-			Console.WriteLine($"Start coordinates (x, y): [{scoli}, {srowi}] ;");
+			//Console.WriteLine($"Start coordinates (x, y): [{scoli}, {srowi}] ;");
 
 			int erowi = endPos[0];  int ecoli = endPos[1];
-			Console.WriteLine($"End coordinates (x, y): [{ecoli}, {erowi}] ;\n");
+			//Console.WriteLine($"End coordinates (x, y): [{ecoli}, {erowi}] ;\n");
 			
 			// Set current position to the coordinates where the Survey will start -- by Instructor request from the End Goal ("endPos").
 			curPos = endPos;  int rowi = curPos[0];  int coli = curPos[1];
-			Console.WriteLine($"Current coordinates (x, y): [{coli}, {rowi}] .\n");
+			//Console.WriteLine($"Current coordinates (x, y): [{coli}, {rowi}] .\n");
 			int[] lookingAt = new int[2];
 			int xi = lookingAt[0];  int yi = lookingAt[1];
 
@@ -96,16 +96,15 @@ namespace BasicPathingLabyrinth
 
 				for(int cy = 1; cy <= 4; cy++) // Looking cycle: up, right, down, left.
 				{
-					Console.WriteLine($"Current coordinates to look around (x, y): [{coli}, {rowi}] .");
+					//Console.WriteLine($"Current coordinates to look around (x, y): [{coli}, {rowi}] .");
 					lookingAt = looking(rowi, coli, lookingAt, cy);					
-					//Console.WriteLine($"The  lookingAtCor  coordinates POST--AFTER--SWITCH TWO: {string.Join(", ", lookingAt)} .");
 					xi = lookingAt[0];  yi = lookingAt[1];
-					Console.WriteLine($"Now looking at direction {cy} starting clockwise, its coordinates (x, y) are: [{yi}, {xi}] .");
+					//Console.WriteLine($"Now looking at direction {cy} starting clockwise, its coordinates (x, y) are: [{yi}, {xi}] .");
 					
 					bool ii = isInside(mapData, xi, yi);  bool ip;
 					if(ii == false) ip = false;  else ip = isPassable(mapData, surveyData, xi, yi);
 					
-					Console.WriteLine($"\nVALIDATE ONE: Inside the map? {ii} | Is the cell clear AND unvisited? {ip} .\n"); // Test.
+					//Console.WriteLine($"\nVALIDATE: Inside the map? {ii} | Is the cell clear AND unvisited? {ip} .\n");
 					//if(isInside(mapData, xi, yi) == true && isPassable(mapData, surveyData, xi, yi) == true) //-- for some reason the short-circuiting didn't work.
 					if(ii == true && ip == true)
 					{
@@ -130,15 +129,18 @@ namespace BasicPathingLabyrinth
 					}
 				}
 			}
-			End:  //Console.WriteLine($"Print out weighted matrix; {yi}, {xi} .");
+			End:
 			if(xi == srowi && yi == scoli)
 			{
-				Console.WriteLine($"FINALLY.. Print out weighted matrix; {yi}, {xi} .");
+				//Console.WriteLine($"FINALLY.. Print out weighted matrix; {yi}, {xi} .");
+				return surveyData;
 			}
-			else Console.WriteLine("TEST, ERROR.. survey prematurely stopped without causing an Exception. Check the code!");
-			//> go through weighted matrix looking for shortest path
-			//> print original matrix highlighting shortest path
-			//> End App.
+			else
+			{
+				Console.WriteLine("ERROR.. Target coordinates cannot be reached!\n" +
+					"Check \"MapData.txt\" making sure there is NO obstruction between the desired Start and End positions.");
+				return new int[0,0];
+			}
 		}
 /*
 	function Surveyor(matrix, _root)
@@ -171,8 +173,8 @@ namespace BasicPathingLabyrinth
 		/// <returns>If out of bounds (from the matrix), return false.</returns>
 		private static bool isInside(int[,] mapData, int rowi, int coli)
 		{
-			Console.WriteLine($"ROWI {rowi} | MapData X Length {mapData.GetLength(0)} |\n" +
-								$"COLI {coli} | MapData Y Length {mapData.GetLength(1)} |\n");
+			//Console.WriteLine($"ROWI {rowi} | MapData X Length {mapData.GetLength(0)} |\n" +
+			//					$"COLI {coli} | MapData Y Length {mapData.GetLength(1)} |\n");
 			if(rowi < mapData.GetLength(0) && coli < mapData.GetLength(1) && rowi >= 0 && coli >= 0)
 			{
 				return true;
@@ -192,13 +194,14 @@ namespace BasicPathingLabyrinth
 		{
 			if(mapData[rowi, coli] != -1 && surveyData[rowi, coli] == -1)
 			{
-				Console.WriteLine($"ROWI {rowi} | COLI {coli} | MapData {mapData[rowi, coli]} | SurveyData {surveyData[rowi, coli]} .\n");
+				//Console.WriteLine($"ROWI {rowi} | COLI {coli} | MapData {mapData[rowi, coli]} | SurveyData {surveyData[rowi, coli]} .\n");
 				return true; // if NOT a "wall" OR if IS marked unvisited (cell value IS NOT int.MinValue) THEN passable: True.
 			}
-			Console.WriteLine($"ROWI {rowi} | COLI {coli} | MapData {mapData[rowi, coli]} | SurveyData {surveyData[rowi, coli]} .\n");
+			//Console.WriteLine($"ROWI {rowi} | COLI {coli} | MapData {mapData[rowi, coli]} | SurveyData {surveyData[rowi, coli]} .\n");
 		    return false;
 		}
 
+		// TODO: Move the below function into "MatrixHelper.cs" .
 		/// <summary>
 		/// Switch looking directions relative to the current cell coordinates.
 		/// </summary>
@@ -257,17 +260,5 @@ namespace BasicPathingLabyrinth
 				}
 			}
 		}
-
-/*		// Temp, may not keep this.
-		private static int findMinDist(int dist, int minDist, int srowi, int scoli, int rowi, int coli)
-		{
-			if (rowi == srowi && coli == scoli)
-			{
-			    minDist = Math.Min(dist, minDist);
-			    return minDist;
-			}
-			return 0;
-		}
-*/
 	}
 }

@@ -22,6 +22,7 @@ namespace BasicPathingLabyrinth
 			// TODO: transfer all output printer functions into a separate new class, so there's less here.
 
 			PrintHeader(size);
+
 			for (int rowi = 0; rowi < matrix.GetLength(0); rowi++)
             {
 				Console.Write($"{rowi, 4}|");
@@ -62,7 +63,18 @@ namespace BasicPathingLabyrinth
 
 			Console.WriteLine("\n--------------------\n");
 
-			Surveyor.Surveying(matrix);
+			int[,] weightedMatrix = new int[size, size];
+			weightedMatrix = Surveyor.Surveying(matrix);
+			Console.WriteLine("Survey complete. Looking for optimal path..");
+
+			Console.WriteLine("\n--------------------\n");
+
+			Console.WriteLine($"Survey data integrity (> 1, OK): {weightedMatrix.Length} .");
+
+			if(weightedMatrix.Length > 1) // The surveying was successful and did not return a [0,0] (single cell) matrix.
+				PathFinder.pathCounter(weightedMatrix, startPosition, endPosition);
+			else throw new ArgumentOutOfRangeException("ERROR.. Insufficient cells.\nThe Start and End points could not be connected.\n" +
+					"Verify that \"MapData.txt\" contains correct values.");
 
 			Console.WriteLine("\n--------------------\nEnd.\n");
 		}
