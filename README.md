@@ -63,6 +63,10 @@ _As I understand the instructions:_ get 2 int arrays "a" & "b", check if "b"'s e
 
 _As I understand the instructions:_ get an int array, double iterate: check  i  against  j  (start i+1), while  i < j  , print match count; eg. `1 2 3 1 1 3 = 4 [(0,3),(0,4),(2,5),(3,4)]`.
 
-* __A12 (BasicPathingLabyrinth),__ wip.
+* __A12 (BasicPathingLabyrinth),__ done, technically.
 
 _As I understand the instructions:_ "basic labyrinth path finder"; "0" for clear cell, "-1" for wall, "int.MaxValue" for occupied, and "int.MinValue" for exit. Square map data from user-input /txt file into matrix, mark clear cells with values in mirror matrix, using these values find shortest path out, print the path as a list of coordinates.
+
+Got some instructor assistance before the holidays printing out the data from the file.
+
+Disregarded certain directives, I think: I did not use "int.MinValue" while "int.MaxValue" not as requested. Things seemed simpler this way. It works, mostly.
