@@ -5,6 +5,7 @@ namespace BasicPathingLabyrinth
 {
 	class MatrixHelper
 	{
+		// Reads map data from the file "MapData.txt" and returns a matrix.
 		public static int[,] ReadMap()
 		{
 			//string path = @"D:\SULI\C# .NET\Homework_01\BasicPathingLabyrinth\MapData.txt"; // Full path.

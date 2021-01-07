@@ -75,7 +75,7 @@ namespace BasicPathingLabyrinth
 			if(weightedMatrix.Length > 1) // The surveying was successful and did not return a [0,0] (single cell) matrix.
 			{
 				PathFinder.PathCounter(weightedMatrix, startPosition, endPosition);
-/*
+/*				
 				var v = PathFinder.PathCounter(weightedMatrix, startPosition, endPosition);
 				
 				if(v != null)

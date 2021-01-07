@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 namespace BasicPathingLabyrinth
-{ // TODO: clean up this mess, both code and output, it's hard to read.
+{
 // TODO: add an exception for the event that the desired start and end positions cannot be connected without jumping over "impassable" cells.
 	class Surveyor
 	{
@@ -80,9 +80,10 @@ namespace BasicPathingLabyrinth
 			int erowi = endPos[0];  int ecoli = endPos[1];
 			//Console.WriteLine($"End coordinates (x, y): [{ecoli}, {erowi}] ;\n");
 			
-			// Set current position to the coordinates where the Survey will start -- by Instructor request from the End Goal ("endPos").
+			// Set current position to the coordinates where the Survey will start -- from the End Goal ("endPos").
 			curPos = endPos;  int rowi = curPos[0];  int coli = curPos[1];
 			//Console.WriteLine($"Current coordinates (x, y): [{coli}, {rowi}] .\n");
+
 			int[] lookingAt = new int[2];
 			int xi = lookingAt[0];  int yi = lookingAt[1];
 
@@ -90,15 +91,14 @@ namespace BasicPathingLabyrinth
 			waiting.Enqueue(curPos);
 			while(waiting.Count != 0)
 			{
-				//curPos = waiting.Dequeue(); // Take the next one from the queue as the current position to look around.
-				Array.Copy(waiting.Dequeue(), curPos, 2);
+				Array.Copy(waiting.Dequeue(), curPos, 2); // Take the next one from the queue as the current position to look around.
 				rowi = curPos[0];  coli = curPos[1];
 
 				for(int cy = 1; cy <= 4; cy++) // Looking cycle: up, right, down, left.
 				{
 					//Console.WriteLine($"Current coordinates to look around (x, y): [{coli}, {rowi}] .");
-					lookingAt = SwitchView(rowi, coli, lookingAt, cy);
-					//lookingAt = MatrixHelper.SwitchView(rowi, coli, lookingAt, cy);
+					//lookingAt = SwitchView(rowi, coli, lookingAt, cy);
+					lookingAt = MatrixHelper.SwitchView(rowi, coli, lookingAt, cy);
 					xi = lookingAt[0];  yi = lookingAt[1];
 					//Console.WriteLine($"Now looking at direction {cy} starting clockwise, its coordinates (x, y) are: [{yi}, {xi}] .");
 					
@@ -165,6 +165,7 @@ namespace BasicPathingLabyrinth
 																|
 												S ( x , y + 1 )( coli , rowi + 1 )
 */
+
 		/// <summary>
 		/// Check wether where we are looking is inside or out of bounds of the matrix.
 		/// </summary>
@@ -214,42 +215,6 @@ namespace BasicPathingLabyrinth
 					surveyThis[i, j] = -1;
 				}
 			}
-		}
-
-		private static int[] SwitchView(int currentRowi, int currentColi, int[] lookAtCor, int turnCycle)
-		{
-			//Console.WriteLine($"Current coordinates to look around (x, y), PRE--SWITCH-CHECK: [{currentColi}, {currentRowi}] .");
-			switch (turnCycle)
-			{
-				// Up.
-				case 1:
-				{
-					lookAtCor[0] = currentRowi - 1; lookAtCor[1] = currentColi;
-					break;
-				};
-				// Right.
-				case 2:
-				{
-					lookAtCor[0] = currentRowi; lookAtCor[1] = currentColi + 1;
-					break;
-				};
-				// Down.
-				case 3:
-				{
-					lookAtCor[0] = currentRowi + 1; lookAtCor[1] = currentColi;
-					break;
-				};
-				// Left.
-				case 4:
-				{
-					lookAtCor[0] = currentRowi; lookAtCor[1] = currentColi - 1;
-					break;
-				};
-
-				//default:  break;
-			}
-			//Console.WriteLine($"The  lookingAtCor  coordinates POST--SWITCH: {string.Join(", ", lookAtCor)} .");
-			return lookAtCor;
 		}
 	}
 }
