@@ -45,7 +45,7 @@ namespace DividedString
 
 		}
 
-/*		// FIXME couldn't find a way to separate input & validation like I did with the Separator.
+/*		// TODO: find a way to separate input & validation like I did with the Separator.
 		private static string CheckNumber(string[] cnr) {
 			bool isOk = true;  float f;
 			while (isOk) {

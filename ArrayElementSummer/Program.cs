@@ -17,16 +17,16 @@ namespace ArrayElementSummer
 			string askLength = "Specify how many numbers to use (between 2 and 10): ";
 			string askNumber = "List the numbers, one per line:";
 			
-			int le = GetLength(askLength);  Console.WriteLine($"Length: {le} .");
+			int le = GetLength(askLength);  Console.WriteLine($"\nLength: {le} .");
 			
 			int[] inNumber = new int[le];
 			int[] ouNumber = new int[le];
 
 			GetNumbers(askNumber, inNumber);  Console.Write($"The numbers: {string.Join(", ", inNumber)} .");
 
-			Summer(inNumber, ouNumber);  Console.Write($"The numbers: {string.Join(", ", ouNumber)} .");
+			Summer(inNumber, ouNumber);  Console.Write($"{string.Join(", ", ouNumber)}");
 
-			Console.WriteLine("\nEnd.\n");
+			Console.WriteLine("\n-----\nEnd.\n");
 		}
 
 		private static int GetLength(string askLe)
@@ -60,7 +60,7 @@ namespace ArrayElementSummer
 
 		private static int[] Summer(int[] inNr, int[] ouNr)
 		{
-			Console.WriteLine("\nResult: ");
+			Console.Write("\n\nResult: ");
 
 			for(int i = 0, r = 0; i < inNr.Length; i++)
 			{

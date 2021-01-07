@@ -6,6 +6,8 @@
  */
 
 using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace BasicFindPairs
 {
@@ -17,7 +19,7 @@ namespace BasicFindPairs
 			string askLength ="Specify how many numbers to use (between 1 and 10):\n";
 			string askNumbers = "List the numbers, one per line:";
 
-			Console.WriteLine("Initialize the array.\n--------------------\n");
+			Console.WriteLine("Set an array of integers to find repeating numbers in.\n--------------------\n");
 
 			int le = GetLength(askLength);  Console.WriteLine($"\nLength: {le} .");
 			int[] arr = new int[le];
@@ -25,7 +27,12 @@ namespace BasicFindPairs
 
 			Console.WriteLine("\n--------------------\n");
 
-			FindPairs(arr);
+			var v = FindPairs(arr);
+			StringBuilder s = new StringBuilder();
+			
+			for(int i = 0; i < v.Count; i++) s.Append($"[{string.Join(" ", v[i])}]").Append(",");
+			
+			Console.WriteLine($"\n\n{s.ToString().TrimEnd(new char[] {','})}");
 
 			Console.WriteLine("\nEnd.\n");
 		}
@@ -59,8 +66,9 @@ namespace BasicFindPairs
 			return array;
 		}
 
-		private static void FindPairs(int[] array)
+		private static List<int[]> FindPairs(int[] array)
 		{
+			List<int[]> pairs = new List<int[]>();
 			int c = 0; // Number of found pairs.
 
 			for(int ai = 0; ai < array.Length-1; ai++)
@@ -71,9 +79,12 @@ namespace BasicFindPairs
 					{
 						c++;
 						Console.WriteLine($"Ai {ai} | Ain {array[ai]} | Aj {aj} | Ajn {array[aj]} | Count {c}");
+						pairs.Add(new int[2] {ai, aj});
 					}
 				}
 			}
+			
+			return pairs;
 		}
 	}
 }

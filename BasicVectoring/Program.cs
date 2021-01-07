@@ -153,7 +153,7 @@ namespace BasicVectoring
 		public static int[] GetRangeSub(int[] inVector, int[] indexStartLength) // string.Substring(index, length)
 		{
 			Console.WriteLine("----------");
-			Console.Write("Enter start range index (watch the limits): ");
+			Console.Write("Enter start range index (watch the limits, 0 ~ Length-1): ");
 			try {
 				int.TryParse(Console.ReadLine(), out int r);
 					if(r > -1 && r < inVector.Length)
@@ -163,7 +163,7 @@ namespace BasicVectoring
 			}
 			catch(Exception e) { Console.WriteLine($"ERROR.. {e}"); }
 			
-			Console.Write($"Enter the desired length (watch the limit): ");
+			Console.Write($"Enter the desired length (watch the limit, no negatives, 0 ~ Length-1): ");
 			try {
 				int.TryParse(Console.ReadLine(), out int r);
 					if(r <= inVector.Length - indexStartLength[0])

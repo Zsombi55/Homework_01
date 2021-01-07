@@ -5,10 +5,6 @@
  * 2nd.
  */
 
-// Commented the whole thing because it contains certain elements unrecognizable to SharpDevelop, such as the $ sign.
-// This way it will not thow a fit while trying to build/debug the other projects I made where I take care to only use
-// elements supported in .NET 4.5.2.
-
 using System;
 
 namespace StringTable
@@ -35,14 +31,6 @@ namespace StringTable
 			}
 
 			Console.Write("\nEnd."); Console.ReadKey();
-
-/*
-			string[,] elementsTable = new string[3,3];
-			
-			FillElements(elementsTable);
-			Outputting(elementsTable);
-			Console.Write ("\nEnd.");  Console.ReadKey();
-*/
 		}
 
 		private static int ReadNumber(string label, int maxTries, int defaultValue)
@@ -130,56 +118,5 @@ namespace StringTable
 
 			return textLines;
 		}
-
-/* ----- FIRST TRIES, FAIL -----
-		private static string[,] FillElements(string[,] elementsTable)
-		{
-			int rle = elementsTable.GetLength(0); // 2d GetLength(x): Rows: 0, Columns: 1.
-			int cle = elementsTable.GetLength(1);
-			string[] element = new string[3];
-
-			Console.WriteLine("Enter {0} things divided by 1 pipe sign, \"|\":", rle);
-			element = CheckText(Console.ReadLine()).Split('|');
-			foreach(string e in element) Console.WriteLine("Input:  {0}", e); // input is entered.
-
-			for(int i = 0; i < rle; i++)
-			{
-				for(int j = 0; j < cle; j++)
-				{
-					elementsTable[i, j] = element[j];
-				}
-			}
-			foreach(string item in elementsTable) { Console.Write("{0} ", item); } // pass test
-
-			Console.WriteLine(); return elementsTable;
-		}
-
-		// EXCEPTION if the pipes have nothing to separate, eg.: "|" , "|s|d" , "b|" , "||" ...
-		private static string CheckText(string ct)
-		{
-			bool isOk = true;
-			while(isOk)
-			{
-				if(!string.IsNullOrEmpty(ct) && ct.Contains("|"))
-				{
-					isOk = false;
-				}
-				else { Console.WriteLine("Invalid input! Try again."); ct = Console.ReadLine(); }
-			}
-			return ct;
-		}
-
-		private static void Outputting(string[,] theTable)
-		{
-			for(int i = 0; i < theTable.GetLength(0); i++)
-			{
-				Console.WriteLine(i);
-				for(int j = 0; j < theTable.GetLength(1); j++)
-				{
-					Console.WriteLine("Element({0}, {1}) = {2}", i, j, theTable[i, j]);
-				}
-			}
-		}
-*/
 	}
 }

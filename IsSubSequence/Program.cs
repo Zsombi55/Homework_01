@@ -89,7 +89,7 @@ namespace IsSubSequence
 
 			if(c == arrayTwo.Length) b = true;
 
-			Console.WriteLine($"\nDoes array  A  contain all elements of array  B ?  {b} .");
+			Console.WriteLine($"\nDoes array  A  contain all elements of array  B  in the SAME order?  {b} .");
 		}
 	}
 }
