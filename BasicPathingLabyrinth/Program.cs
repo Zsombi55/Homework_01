@@ -6,6 +6,7 @@
  */
 
 using System;
+using System.Text;
 
 namespace BasicPathingLabyrinth
 {
@@ -28,7 +29,7 @@ namespace BasicPathingLabyrinth
 				Console.Write($"{rowi, 4}|");
 				for (int coli = 0; coli < matrix.GetLength(1); coli++)
                 {
-					if(matrix[rowi, coli] == -1) // TODO: change  " if - else "  into  "switch ".
+					if(matrix[rowi, coli] == -1) // TODO: change  " if - else "  into  "switch " ?
 					{
 						Console.ForegroundColor = ConsoleColor.DarkBlue;
 						Console.Write($"{matrix[rowi, coli], 5}");
@@ -72,7 +73,22 @@ namespace BasicPathingLabyrinth
 			Console.WriteLine($"Survey data integrity (> 1, OK): {weightedMatrix.Length} .");
 
 			if(weightedMatrix.Length > 1) // The surveying was successful and did not return a [0,0] (single cell) matrix.
-				PathFinder.pathCounter(weightedMatrix, startPosition, endPosition);
+			{
+				PathFinder.PathCounter(weightedMatrix, startPosition, endPosition);
+/*
+				var v = PathFinder.PathCounter(weightedMatrix, startPosition, endPosition);
+				
+				if(v != null)
+				{
+					StringBuilder s = new StringBuilder();
+			
+					for(int i = 0; i < v.Count; i++) s.Append($"[{string.Join(" ", v[i])}]").Append(",");
+			
+					Console.WriteLine($"\n\n{s.ToString().TrimEnd(new char[] {','})}");
+				}
+				else throw new IndexOutOfRangeException("ERROR.. Something went wrong during result List<int[]> creation or retrieval.");
+*/
+			}
 			else throw new ArgumentOutOfRangeException("ERROR.. Insufficient cells.\nThe Start and End points could not be connected.\n" +
 					"Verify that \"MapData.txt\" contains correct values.");
 

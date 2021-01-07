@@ -6,7 +6,7 @@ namespace BasicPathingLabyrinth
 // TODO: add an exception for the event that the desired start and end positions cannot be connected without jumping over "impassable" cells.
 	class Surveyor
 	{
-	// For the standard  X, Y  coordinate system: row index /rowi = X and column index /coli = Y	|	x = coli | y = rowi .
+	// For the standard  X, Y  coordinate system: row index /rowi = Y and column index /coli = X	|	x = coli | y = rowi .
 
 		/// <summary>
 		/// Get the start position coordinates.
@@ -97,7 +97,8 @@ namespace BasicPathingLabyrinth
 				for(int cy = 1; cy <= 4; cy++) // Looking cycle: up, right, down, left.
 				{
 					//Console.WriteLine($"Current coordinates to look around (x, y): [{coli}, {rowi}] .");
-					lookingAt = looking(rowi, coli, lookingAt, cy);					
+					lookingAt = SwitchView(rowi, coli, lookingAt, cy);
+					//lookingAt = MatrixHelper.SwitchView(rowi, coli, lookingAt, cy);
 					xi = lookingAt[0];  yi = lookingAt[1];
 					//Console.WriteLine($"Now looking at direction {cy} starting clockwise, its coordinates (x, y) are: [{yi}, {xi}] .");
 					
@@ -121,9 +122,8 @@ namespace BasicPathingLabyrinth
 						if(surveyData[rowi, coli] + 1 <= int.MaxValue)
 						{
 							surveyData[xi, yi] = surveyData[rowi, coli] + 1;
-							//waiting.Enqueue(lookingAt); // Place what was just marked in the queue to be looked around later.
 							int[] t = new int[2];  Array.Copy(lookingAt, t, lookingAt.Length);
-							waiting.Enqueue(t);
+							waiting.Enqueue(t); // Place what was just marked in the queue to be looked around later.
 						}
 						else throw new OverflowException("ERROR.. There are too many cells to map with BFS.");
 					}
@@ -201,16 +201,22 @@ namespace BasicPathingLabyrinth
 		    return false;
 		}
 
-		// TODO: Move the below function into "MatrixHelper.cs" .
 		/// <summary>
-		/// Switch looking directions relative to the current cell coordinates.
+		/// Fill the mirror map data with values to mark unvisited cells.
 		/// </summary>
-		/// <param name="currentRowi">Current cell row index.</param>
-		/// <param name="currentColi">Current cell column index.</param>
-		/// <param name="lookAtCor">Coordinate pair of the cell we are to look at after the switch.</param>
-		/// <param name="turnCycle">The number of the current direction; we always look around.</param>
-		/// <returns></returns>
-		private static int[] looking(int currentRowi, int currentColi, int[] lookAtCor, int turnCycle)
+		/// <param name="surveyThis">A mirror map matrix where temporary background data will be stored.</param>
+		private static void addDummySurveyData(int[,] surveyThis)
+		{
+			for(int i = 0; i < surveyThis.GetLength(0); i++)
+			{
+				for(int j = 0; j < surveyThis.GetLength(1); j++)
+				{
+					surveyThis[i, j] = -1;
+				}
+			}
+		}
+
+		private static int[] SwitchView(int currentRowi, int currentColi, int[] lookAtCor, int turnCycle)
 		{
 			//Console.WriteLine($"Current coordinates to look around (x, y), PRE--SWITCH-CHECK: [{currentColi}, {currentRowi}] .");
 			switch (turnCycle)
@@ -244,21 +250,6 @@ namespace BasicPathingLabyrinth
 			}
 			//Console.WriteLine($"The  lookingAtCor  coordinates POST--SWITCH: {string.Join(", ", lookAtCor)} .");
 			return lookAtCor;
-		}
-
-		/// <summary>
-		/// Fill the mirror map data with values to mark unvisited cells.
-		/// </summary>
-		/// <param name="surveyThis">A mirror map matrix where temporary background data will be stored.</param>
-		private static void addDummySurveyData(int[,] surveyThis)
-		{
-			for(int i = 0; i < surveyThis.GetLength(0); i++)
-			{
-				for(int j = 0; j < surveyThis.GetLength(1); j++)
-				{
-					surveyThis[i, j] = -1;
-				}
-			}
 		}
 	}
 }

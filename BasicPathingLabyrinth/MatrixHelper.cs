@@ -48,5 +48,49 @@ namespace BasicPathingLabyrinth
 
 			return matrix;
 		}
+
+		/// <summary>
+		/// Switch looking directions relative to the current cell coordinates.
+		/// </summary>
+		/// <param name="currentRowi">Current cell row index.</param>
+		/// <param name="currentColi">Current cell column index.</param>
+		/// <param name="lookAtCor">Coordinate pair of the cell we are to look at after the switch.</param>
+		/// <param name="turnCycle">The number of the current direction; we always look around.</param>
+		/// <returns>An integer array with the coordinates of the new cell to inspect.</returns>
+		internal static int[] SwitchView(int currentRowi, int currentColi, int[] lookAtCor, int turnCycle)
+		{
+			//Console.WriteLine($"Current coordinates to look around (x, y), PRE--SWITCH-CHECK: [{currentColi}, {currentRowi}] .");
+			switch (turnCycle)
+			{
+				// Up.
+				case 1:
+				{
+					lookAtCor[0] = currentRowi - 1; lookAtCor[1] = currentColi;
+					break;
+				};
+				// Right.
+				case 2:
+				{
+					lookAtCor[0] = currentRowi; lookAtCor[1] = currentColi + 1;
+					break;
+				};
+				// Down.
+				case 3:
+				{
+					lookAtCor[0] = currentRowi + 1; lookAtCor[1] = currentColi;
+					break;
+				};
+				// Left.
+				case 4:
+				{
+					lookAtCor[0] = currentRowi; lookAtCor[1] = currentColi - 1;
+					break;
+				};
+
+				//default:  break;
+			}
+			//Console.WriteLine($"The  lookingAtCor  coordinates POST--SWITCH: {string.Join(", ", lookAtCor)} .");
+			return lookAtCor;
+		}
 	}
 }
