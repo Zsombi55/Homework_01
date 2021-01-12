@@ -23,9 +23,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArrayElementSummer", "Array
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IsSubSequence", "IsSubSequence\IsSubSequence.csproj", "{1369A319-2D30-4FBF-A8DC-22B8114E6EA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicFindPairs", "BasicFindPairs\BasicFindPairs.csproj", "{7FDC8C29-EB7A-481E-B7EE-9BB9E9558394}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicFindPairs", "BasicFindPairs\BasicFindPairs.csproj", "{7FDC8C29-EB7A-481E-B7EE-9BB9E9558394}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicPathingLabyrinth", "BasicPathingLabyrinth\BasicPathingLabyrinth.csproj", "{C8D7DBC0-CCD7-4F99-8235-9203511535C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicPathingLabyrinth", "BasicPathingLabyrinth\BasicPathingLabyrinth.csproj", "{C8D7DBC0-CCD7-4F99-8235-9203511535C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecursiveVectoring", "RecursiveVectoring\RecursiveVectoring.csproj", "{58E13DA9-0D5F-43B1-BE4F-927C0A226A3D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +83,10 @@ Global
 		{C8D7DBC0-CCD7-4F99-8235-9203511535C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8D7DBC0-CCD7-4F99-8235-9203511535C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8D7DBC0-CCD7-4F99-8235-9203511535C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58E13DA9-0D5F-43B1-BE4F-927C0A226A3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58E13DA9-0D5F-43B1-BE4F-927C0A226A3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58E13DA9-0D5F-43B1-BE4F-927C0A226A3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58E13DA9-0D5F-43B1-BE4F-927C0A226A3D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

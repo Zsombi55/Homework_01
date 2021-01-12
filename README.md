@@ -49,7 +49,7 @@ _As I understand the instructions:_ read integers in vector, do calculations/man
 
 _As I understand the instructions:_ get a matrix, print the secondary diagonal line, transpose the matrix and print result, check for identity matrix.
 
-> 20201216 ~ 20210106
+> 20201216 ~ 20210106 ~ 20210120
 
 * __A9 (ArrayElementSummer),__ done.
 
@@ -63,10 +63,18 @@ _As I understand the instructions:_ get 2 int arrays "a" & "b", check if "b"'s e
 
 _As I understand the instructions:_ get an int array, double iterate: check  i  against  j  (start i+1), while  i < j  , print match count; eg. `1 2 3 1 1 3 = 4 [(0,3),(0,4),(2,5),(3,4)]`.
 
-* __A12 (BasicPathingLabyrinth),__ done, technically.
+* __A12 (BasicPathingLabyrinth),__ almost done, the stepping function that follows the weighted cells stops after 5 or so steps.. `will look into it asap`.
 
 _As I understand the instructions:_ "basic labyrinth path finder"; "0" for clear cell, "-1" for wall, "int.MaxValue" for occupied, and "int.MinValue" for exit. Square map data from user-input /txt file into matrix, mark clear cells with values in mirror matrix, using these values find shortest path out, print the path as a list of coordinates.
 
 Got some instructor assistance before the holidays printing out the data from the file.
 
-Disregarded certain directives, I think: I did not use "int.MinValue" while "int.MaxValue" not as requested. Things seemed simpler this way. It works, mostly.
+Disregarded certain directives, I think: I did not use "int.MinValue" while "int.MaxValue" not as requested. Things seem simpler this way. It works, mostly.
+
+> 20210111 ~ 20210127
+
+* __A13 (RecursiveVectoring),__ done.
+
+_As I understand the instructions:_ have or get a number array (a vector), then without predefined loops such as FOR, FOREACH, WHILE, etc.: find the smallest and the largest values - using Recursion.
+
+The User has to input the elements but the vector length is fixed at 10.

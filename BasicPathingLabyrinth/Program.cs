@@ -70,7 +70,7 @@ namespace BasicPathingLabyrinth
 
 			Console.WriteLine("\n--------------------\n");
 
-			Console.WriteLine($"Survey data integrity (> 1, OK): {weightedMatrix.Length} .");
+			Console.WriteLine($"Survey data integrity (OK if > 1): {weightedMatrix.Length} .");
 
 			if(weightedMatrix.Length > 1) // The surveying was successful and did not return a [0,0] (single cell) matrix.
 			{
