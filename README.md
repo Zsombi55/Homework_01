@@ -75,6 +75,6 @@ Disregarded certain directives, I think: I did not use "int.MinValue" while "int
 
 * __A13 (RecursiveVectoring),__ done.
 
-_As I understand the instructions:_ have or get a number array (a vector), then without predefined loops such as FOR, FOREACH, WHILE, etc.: find the smallest and the largest values - using Recursion.
+_As I understand the instructions:_ have or get a number array (a vector), then without predefined loops such as FOR, FOREACH, WHILE, etc.: find the smallest and the largest values - using Recursion. By instructor request "Binary search" is to be used.
 
-The User has to input the elements but the vector length is fixed at 10.
+The User has to input the elements but the vector length is fixed at 10. For the index search part first I used a different search method, second "Binary".
