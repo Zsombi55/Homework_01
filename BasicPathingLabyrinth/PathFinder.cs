@@ -34,7 +34,7 @@ namespace BasicPathingLabyrinth
 				{
 					peekAt = MatrixHelper.SwitchView(rowi, coli, peekAt, i);
 					xi = peekAt[0]; yi = peekAt[1];
-
+					
 					if((xi < weightedMatrix.GetLength(0) && yi < weightedMatrix.GetLength(1) && xi >= 0 && yi >= 0) && (weightedMatrix[xi, yi] != -1))
 					{
 						if(weightedMatrix[xi, yi] == weightedMatrix[rowi, coli] - 1)
@@ -44,28 +44,34 @@ namespace BasicPathingLabyrinth
 							rowi = t[0];  coli = t[1];
 							path.Add(t);
 
-							Console.WriteLine($"\t{c}:", 2);
+							Console.WriteLine($"\n\t{c}:", 2);
 							c++;
 							for(int j = 0; j < path.Count; j++) Console.Write($"[{string.Join(", ", path[j])}]; ");
-						}	
+						}
 					}
-
-					if(xi == endHere[0] && yi == endHere[1]) // TODO: Find out why this is ignored without negation !
+					
+					if(xi == endHere[0] && yi == endHere[1]) // TODO: Why is this ignored without negation !?
 					{
 						//Console.WriteLine($"Number of steps found: {path.Count - 1} .\n");
-						Console.WriteLine($"{c}:: {coli}, {rowi} | {string.Join(", ", currentPosition)} | {yi}, {xi} .");
-						goto End;
+						Console.WriteLine($"\n{c}:: {coli}, {rowi} | {string.Join(", ", currentPosition)} | {yi}, {xi} .");
+						EndPrint(path);
 						//return path;
 					}
+
 				}
 			}
 			while(xi != endHere[0] && yi != endHere[1]); // DO - WHILE
 
-			End:
-				Console.WriteLine("---");
-				Console.WriteLine($"Number of steps found: {path.Count - 1} .\n");
-				//Console.WriteLine($"{c}:: {coli}, {rowi} | {string.Join(", ", currentPosition)} | {yi}, {xi} .");
+			Console.WriteLine($"\n\nTracing ended.");
+
 			//return path;
+		}
+
+		private static void EndPrint(List<int[]> thePath)
+		{
+			Console.WriteLine("---");
+			Console.WriteLine($"Number of steps found: {thePath.Count - 1} .\n");
+			//Console.WriteLine($"{c}:: {coli}, {rowi} | {string.Join(", ", currentPosition)} | {yi}, {xi} .");
 		}
 
 	/*	
