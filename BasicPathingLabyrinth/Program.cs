@@ -78,7 +78,9 @@ namespace BasicPathingLabyrinth
 		/// <param name="matrix">A filled integer matrix.</param>
 		private static void PrintContent(int[,] matrix, int[,] pathList)
 		{
-			int i = 0;
+			bool b = false;
+			int x = 0;
+
 			for (int rowi = 0; rowi < matrix.GetLength(0); rowi++)
             {
 				Console.Write($"{rowi, 4}|");
@@ -100,12 +102,23 @@ namespace BasicPathingLabyrinth
 						{
 							if(pathList.Length == 0) throw new ArgumentOutOfRangeException(nameof(pathList), "Too few shortest path list content.");
 							
-							var v = new int[2] {rowi, coli};
-							if(v.Equals(pathList[i, 0]))
+							for(; x < pathList.GetLength(0) - 1; x++)
 							{
-								Console.ForegroundColor = ConsoleColor.Yellow;
+								b = (rowi == pathList[x, 0] && coli == pathList[x, 1]);
+								if(b)
+								{
+									Console.ForegroundColor = ConsoleColor.Yellow;
+									Console.Write($"{matrix[rowi, coli], 5}");
+									Console.ResetColor();
+									x = 0;
+									break;
+								}
+							}
+
+							if(b == false)
+							{
 								Console.Write($"{matrix[rowi, coli], 5}");
-								Console.ResetColor();
+								x = 0;
 							}
 						}
 					}
@@ -121,7 +134,7 @@ namespace BasicPathingLabyrinth
 						Console.Write($"{matrix[rowi, coli], 5}");
 						Console.ResetColor();
 					}
-					i++;
+					
 				}
 				Console.Write($" |");
 				Console.Write($"{rowi, 3}" + "\n");
@@ -129,7 +142,7 @@ namespace BasicPathingLabyrinth
 				// TODO: find a way to print the matrix with lines separated by a blank line, But without any at the end.
 				PrintBorder(matrix.GetLength(0));
 
-				i++; 
+				 
             }
 		}
 
