@@ -15,6 +15,8 @@ namespace BasicPathingLabyrinth
 
 			// First check size else there's no reason to continue. We need a SQUARE (N x N), not a rectangle (N x M).
 			string[] lines = File.ReadAllLines(path);
+
+
 			if(lines.Length < 1) // No matrix size.
 			{ throw new Exception("ERROR.. Missing matrix size definition! Verify \"MapData.txt\"."); }
 			
@@ -24,7 +26,9 @@ namespace BasicPathingLabyrinth
 			if(lines.Length - 1 < size) // Column length does not match given matrix size.
 			{ throw new Exception("ERROR.. Row length does not match matrix size! Verify \"MapData.txt\"."); }
 			
+
 			int[,] matrix = new int[size, size]; // Square matrix so one size fits all sides.
+
 			for(int rowi = 0 ; rowi < size; rowi++)
 			{
 				string line = lines[rowi + 1];
@@ -38,7 +42,8 @@ namespace BasicPathingLabyrinth
 					if(!int.TryParse(cells[coli], out int cellValue)) // Incorrect or missing cell defining values in "MapData". ELSE get initializing cell values.
 					{ throw new Exception("ERROR.. The cell has no initializer value! Verify \"MapData.txt\"."); }
 
-					if(cellValue == 0 || cellValue == -1 || cellValue == 1 || cellValue == 2) //cellValue == int.MaxValue || cellValue == int.MinValue)
+
+					if(cellValue == 0 || cellValue == -1 || cellValue == 1 || cellValue == 2)
 					{
 						matrix[rowi, coli] = cellValue;
 					}
@@ -55,12 +60,11 @@ namespace BasicPathingLabyrinth
 		/// </summary>
 		/// <param name="currentRowi">Current cell row index.</param>
 		/// <param name="currentColi">Current cell column index.</param>
-		/// <param name="lookAtCor">Coordinate pair of the cell we are to look at after the switch.</param>
 		/// <param name="turnCycle">The number of the current direction; we always look around.</param>
 		/// <returns>An integer array with the coordinates of the new cell to inspect.</returns>
-		internal static int[] SwitchView(int currentRowi, int currentColi, int[] lookAtCor, int turnCycle)
+		internal static int[] SwitchView(int currentRowi, int currentColi, int turnCycle)
 		{
-			//Console.WriteLine($"Current coordinates to look around (x, y), PRE--SWITCH-CHECK: [{currentColi}, {currentRowi}] .");
+			int[] lookAtCor = new int[2];
 			switch (turnCycle)
 			{
 				// Up.
@@ -90,7 +94,6 @@ namespace BasicPathingLabyrinth
 
 				//default:  break;
 			}
-			//Console.WriteLine($"The  lookingAtCor  coordinates POST--SWITCH: {string.Join(", ", lookAtCor)} .");
 			return lookAtCor;
 		}
 	}

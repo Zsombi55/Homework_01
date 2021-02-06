@@ -3,6 +3,9 @@
  * Date: 2020-12-21
  * Time: 12:12
  * 12th.
+ * -----------------------------
+ * Refactoring Date: 2021-02-05
+ * RefactoringTime: 10:04
  */
 
 using System;
@@ -20,16 +23,59 @@ namespace BasicPathingLabyrinth
 			int[] startPosition = Surveyor.GetStartPosition(matrix);
 			int[] endPosition = Surveyor.GetEndPosition(matrix);
 
-			// TODO: transfer all output printer functions into a separate new class, so there's less here.
-
 			PrintHeader(size);
 
+			PrintContent(matrix);
+
+			PrintFooter(size);
+
+			Console.Write($"\nThe designated starting position coordinates (x, y) are:  [ {startPosition[1]} , {startPosition[0]} ].\n" +
+						  $"The designated ending position coordinates (x, y) are:  [ {endPosition[1]} , {endPosition[0]} ].");
+
+			Console.WriteLine("\n--------------------\n");
+
+			int[,] weightedMatrix = new int[size, size];
+			weightedMatrix = Surveyor.Surveying(matrix);
+
+			Console.WriteLine("Survey complete. Looking for optimal path..");
+
+			Console.WriteLine("\n--------------------\n");
+
+			Console.WriteLine($"Survey data integrity (OK if > 1): {weightedMatrix.Length} .");
+
+			PrintResult(weightedMatrix, startPosition, endPosition);
+
+			Console.WriteLine("\n--------------------\nEnd.\n");
+		}
+
+		private static void PrintHeader(int length)
+		{
+			Console.Write("    |");
+			for(int i = 0; i < length; i++) Console.Write($"{i, 5}");
+			Console.WriteLine(" |");
+			Console.Write(new String('-', length * 6) + "\n");
+		}
+
+		private static void PrintFooter(int length)
+		{
+			Console.Write(new String('-', length * 6) + "\n");
+			Console.Write("    |");
+			for(int i = 0; i < length; i++) Console.Write($"{i, 5}");
+			Console.WriteLine(" |");
+		}
+
+		/// <summary>
+		/// Prints the matrix color-coded based on specific values in an arranged table format.
+		/// </summary>
+		/// <param name="matrix">A filled integer matrix.</param>
+		private static void PrintContent(int[,] matrix)
+		{
 			for (int rowi = 0; rowi < matrix.GetLength(0); rowi++)
             {
 				Console.Write($"{rowi, 4}|");
 				for (int coli = 0; coli < matrix.GetLength(1); coli++)
                 {
-					if(matrix[rowi, coli] == -1) // TODO: change  " if - else "  into  "switch " ?
+					if(matrix[rowi, coli] == -1) // TODO: change  " if - else "  into  "switch " ??
 					{
 						Console.ForegroundColor = ConsoleColor.DarkBlue;
 						Console.Write($"{matrix[rowi, coli], 5}");
@@ -53,67 +99,47 @@ namespace BasicPathingLabyrinth
 				}
 				Console.Write($" |");
 				Console.Write($"{rowi, 3}" + "\n");
-				PrintFiller(size);
+
+				PrintBorder(matrix.GetLength(0));
 
 				// TODO: find a way to print the matrix with lines separated by a blank line, But without any at the end.
             }
-			PrintFooter(size);
+		}
 
-			Console.Write($"\nThe designated starting position coordinates (x, y) are:  [ {startPosition[1]} , {startPosition[0]} ].\n" +
-						  $"The designated ending position coordinates (x, y) are:  [ {endPosition[1]} , {endPosition[0]} ].");
+		private static void PrintBorder(int length)
+		{
+			Console.Write("    |" + new String(' ', length * 5) + " |\n");
+		}
 
-			Console.WriteLine("\n--------------------\n");
-
-			int[,] weightedMatrix = new int[size, size];
-			weightedMatrix = Surveyor.Surveying(matrix);
-			Console.WriteLine("Survey complete. Looking for optimal path..");
-
-			Console.WriteLine("\n--------------------\n");
-
-			Console.WriteLine($"Survey data integrity (OK if > 1): {weightedMatrix.Length} .");
-
+		/// <summary>
+		/// Prints the shortestpath coordinates in a line in a prepared & weighted map-matrix.
+		/// Implying: there is only 1 exit, and there is no obstruction between the start and end positions.
+		/// </summary>
+		/// <param name="weightedMatrix">A weighted mirror of the original matrix.</param>
+		/// <param name="startPosition">Extracted start coordinates.</param>
+		/// <param name="endPosition">Extracted end coordinates.</param>
+		private static void PrintResult(int[,] weightedMatrix, int[] startPosition, int[] endPosition)
+		{
 			if(weightedMatrix.Length > 1) // The surveying was successful and did not return a [0,0] (single cell) matrix.
-			{
-				PathFinder.PathCounter(weightedMatrix, startPosition, endPosition);
-/*				
+			{	
 				var v = PathFinder.PathCounter(weightedMatrix, startPosition, endPosition);
 				
 				if(v != null)
 				{
 					StringBuilder s = new StringBuilder();
 			
-					for(int i = 0; i < v.Count; i++) s.Append($"[{string.Join(" ", v[i])}]").Append(",");
+					for(int i = 0; i < v.Count; i++)
+					{
+						s.Append($"[{string.Join(" ", v[i])}]").Append(",");
+					}
 			
 					Console.WriteLine($"\n\n{s.ToString().TrimEnd(new char[] {','})}");
 				}
 				else throw new IndexOutOfRangeException("ERROR.. Something went wrong during result List<int[]> creation or retrieval.");
-*/
+
 			}
 			else throw new ArgumentOutOfRangeException("ERROR.. Insufficient cells.\nThe Start and End points could not be connected.\n" +
 					"Verify that \"MapData.txt\" contains correct values.");
-
-			Console.WriteLine("\n--------------------\nEnd.\n");
-		}
-
-		private static void PrintHeader(int length)
-		{
-			Console.Write("    |");
-			for(int i = 0; i < length; i++) Console.Write($"{i, 5}");
-			Console.WriteLine(" |");
-			Console.Write(new String('-', length * 6) + "\n");
-		}
-
-		private static void PrintFooter(int length)
-		{
-			Console.Write(new String('-', length * 6) + "\n");
-			Console.Write("    |");
-			for(int i = 0; i < length; i++) Console.Write($"{i, 5}");
-			Console.WriteLine(" |");
-		}
-
-		private static void PrintFiller(int length)
-		{
-			Console.Write("    |" + new String(' ', length * 5) + " |\n");
 		}
 	}
 }
