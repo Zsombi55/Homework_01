@@ -12,7 +12,6 @@ namespace BasicPathingLabyrinth
 		/// /// <param name="beginHere">The designated starting osition, in the input file it is marked with  " 2 ".</param>
 		/// /// <param name="endHere">The designated goal osition, in the input file it is marked with  " 1 ".</param>
 		public static List<int[]> PathCounter(int[,] weightedMatrix, int[] beginHere, int[] endHere)
-		//public static void PathCounter(int[,] weightedMatrix, int[] beginHere, int[] endHere)
 		{
 			int[] currentPosition = new int[2];
 			currentPosition = beginHere;
@@ -26,12 +25,13 @@ namespace BasicPathingLabyrinth
 
 			List<int[]> path = new List<int[]>();  path.Add(beginHere);
 
-			Console.WriteLine($"\nStart coordinates (x, y):    {beginHere[1]}, {beginHere[0]}\n" +
-								$"End coordinates (x, y):     {endHere[1]}, {endHere[0]}\n");
-			Console.WriteLine("-----");
-
+			Console.WriteLine($"\nStart coordinates (x, y):    {beginHere[1]}, {beginHere[0]} ;\n" +
+								$"End coordinates (x, y):     {endHere[1]}, {endHere[0]} .");
+			
 			bool isThisTheEnd;
-			int c = 1;
+			
+			//int c = 1; // Used for "TracePath_Test".
+
 			do
 			{
 				for(int i = 1; i <= 4; i++)
@@ -53,17 +53,13 @@ namespace BasicPathingLabyrinth
 							
 							path.Add(t);
 
-							Console.WriteLine($"\n\t{c}:", 2);
-							c++;
-							for(int j = 0; j < path.Count; j++) Console.Write($"[{string.Join(", ", path[j])}]; ");
+							//TracePath_Test(path, currentCycle: c); // Prints out the traced path every step cycle.
 						}
 					}
 					
 					isThisTheEnd = (xi == endHere[0] && yi == endHere[1]);
-					if(isThisTheEnd) // TODO: Why is this ignored without negation !?
+					if(isThisTheEnd)
 					{
-						//Console.WriteLine($"Number of steps found: {path.Count - 1} .\n");
-						Console.WriteLine($"\n{c}:: {coli}, {rowi} | {string.Join(", ", currentPosition)} | {yi}, {xi} .");
 						EndPrint(path);
 						return path;
 					}
@@ -80,17 +76,22 @@ namespace BasicPathingLabyrinth
 
 		private static void EndPrint(List<int[]> thePath)
 		{
-			Console.WriteLine("---");
-			Console.WriteLine($"Number of steps found: {thePath.Count - 1} .\n");
-			//Console.WriteLine($"{c}:: {coli}, {rowi} | {string.Join(", ", currentPosition)} | {yi}, {xi} .");
+			Console.WriteLine("\n--------------------\n");
+			Console.WriteLine($"Number of steps found: {thePath.Count - 1} .");
 		}
 
-	/*	
-	 	// Print map marking The Path.
-	 	public static void printCountedPath(int[,] matrix, int[] thePath)
+
+		/// <summary>
+		/// TEST.. Prints out all cells each cycle along the traced path.
+		/// </summary>
+		/// <param name="thePath">The current path traced; may not be complete.</param>
+		/// <param name="currentCycle">The tracing cycle: look around checking weights, if viable found then step there.. repeat.</param>
+		private static void TracePath_Test(List<int[]> thePath, int currentCycle)
 		{
-		//
+			Console.WriteLine($"\n\t{currentCycle}:", 2);
+			currentCycle++;
+			for(int j = 0; j < thePath.Count; j++)
+				Console.Write($"[{string.Join(", ", thePath[j])}]; ");
 		}
-	*/
 	}
 }

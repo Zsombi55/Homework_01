@@ -12,49 +12,25 @@ namespace BasicPathingLabyrinth
 		/// Get the start position coordinates.
 		/// </summary>
 		/// <param name="mapData">The matrix previously extracted from the input file.</param>
+		/// <param name="startEndValue">Integer value from the MapData file, denoting the Start or End cells.</param>
 		/// <returns>An integer array.</returns>
-		public static int[] GetStartPosition(int[,] mapData)
+		public static int[] GetStartEndPositions(int[,] mapData, int startEndValue)
 		{
-			int[] start = new int[2];
-			int rowi; int coli;
-			for (rowi = 0; rowi < mapData.GetLength(0); rowi++)
-            {
-				for (coli = 0; coli < mapData.GetLength(1); coli++)
-                {
-					if(mapData[rowi, coli] == 2) // See "MapData.txt".
-					{
-						start[0] = rowi;
-						start[1] = coli;
-						return start;
-					}
-				}
-            }
-			return start;
-		}
+			int[] anEnd = new int[2];
 
-		/// <summary>
-		/// Get the end goal position coordinates.
-		/// </summary>
-		/// <param name="mapData">The matrix previously extracted from the input file.</param>
-		/// <returns>An integer array.</returns>
-		public static int[] GetEndPosition(int[,] mapData)
-		{
-			int[] ending = new int[2];
-			int rowi; int coli;
-			for (rowi = 0; rowi < mapData.GetLength(0); rowi++)
+			for (int rowi = 0; rowi < mapData.GetLength(0); rowi++)
             {
-				for (coli = 0; coli < mapData.GetLength(1); coli++)
+				for (int coli = 0; coli < mapData.GetLength(1); coli++)
                 {
-					if(mapData[rowi, coli] == 1) // See "MapData.txt".
+					if(mapData[rowi, coli] == startEndValue) // See "MapData.txt".
 					{
-						ending[0] = rowi;
-						ending[1] = coli;
-						goto End;
+						anEnd[0] = rowi;
+						anEnd[1] = coli;
+						return anEnd;
 					}
 				}
             }
-			End:
-			return ending;
+			return anEnd;
 		}
 
 		/// <summary>
@@ -67,13 +43,15 @@ namespace BasicPathingLabyrinth
 			int[,] surveyData = new int[mapData.GetLength(0), mapData.GetLength(0)];
 			addDefaultSurveyData(surveyData);
 			
-			// Start, End, and Current cell coordinates.
-			int[] startPos = GetStartPosition(mapData);
-			int[] endPos = GetEndPosition(mapData);
+			int[] startPos = GetStartEndPositions(mapData, startEndValue: 2); // The "startEndValue" value is found inside the "MapData" file.
+			int[] endPos = GetStartEndPositions(mapData, startEndValue: 1);
 			
 			// Buffer, put here the just checked clear cells (did not already have a cost, no walls) to peek around next cycle.
 			Queue<int[]> waiting = new Queue<int[]>();
 
+
+			// ----- The below arrays are Declared & Initialized here because they are parameters for more than one following code brackets. ----- //
+			// --------------------------------- //
 			// Start cell row & column indexes.
 			int srowi = startPos[0];
 			int scoli = startPos[1];
@@ -83,10 +61,12 @@ namespace BasicPathingLabyrinth
 			int rowi = curPos[0];
 			int coli = curPos[1];
 			
-			// Declared & initialized here because it is used 2x in this code bracket.
+			// Store coordinates of the cell we are looking at at any given time, around the current cell we are at.
 			int[] lookingAt = new int[2];
 			int xi = lookingAt[0];
 			int yi = lookingAt[1];
+			// --------------------------------- //
+
 
 			bool lookAtIsStart, lessThanIntMaxSize, isInsideBounds, isPassableCell;
 
@@ -113,8 +93,10 @@ namespace BasicPathingLabyrinth
 					
 					if(isInsideBounds == true && isPassableCell == true)
 					{
+						// Booleans.
 						lessThanIntMaxSize = (surveyData[rowi, coli] + 1 <= int.MaxValue);
 						lookAtIsStart = (xi == srowi && yi == scoli);
+
 						if(lookAtIsStart)
 						{
 							// Check against too large matrix size.
@@ -127,13 +109,14 @@ namespace BasicPathingLabyrinth
 							}
 							else throw new OverflowException("ERROR.. There are too many cells to map with BFS.");
 						}
-						if(surveyData[rowi, coli] + 1 <= int.MaxValue)
+
+						if(lessThanIntMaxSize)
 						{
 							surveyData[xi, yi] = surveyData[rowi, coli] + 1;
 							
 							int[] t = new int[2];
 							Array.Copy(lookingAt, t, lookingAt.Length);
-
+							
 							waiting.Enqueue(t); // Place what was just marked in the queue to be looked around later.
 						}
 						else throw new OverflowException("ERROR.. There are too many cells to map with BFS.");
