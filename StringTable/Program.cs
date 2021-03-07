@@ -16,7 +16,7 @@ namespace StringTable
 		public static void Main(string[] args)
 		{
 			char separator = ReadSeparator(3, '|');
-			string[] textLines = ReadLinesOfText(separator);
+			string[] textLines = ReadLinesOfText(separator); // NOTE: it might be good to add the expected line elements' count as parameter form here.
 
 			for(int i = 0; i < textLines?.Length; i++)
 			{
