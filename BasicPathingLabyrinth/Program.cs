@@ -88,7 +88,7 @@ namespace BasicPathingLabyrinth
                 {
 					if(matrix[rowi, coli] == -1) // TODO: change  " if - else "  into  "switch " ??
 					{
-						Console.ForegroundColor = ConsoleColor.DarkBlue;
+						Console.ForegroundColor = ConsoleColor.DarkBlue; // TODO: Put these into separate functions, eg.: "PrintWall(int cellContent)".
 						Console.Write($"{matrix[rowi, coli], 5}");
 						Console.ResetColor();
 					}
@@ -98,7 +98,7 @@ namespace BasicPathingLabyrinth
 						{
 							Console.Write($"{matrix[rowi, coli], 5}"); // If we don't yet have the shortest path traced, then just use default color.
 						}
-						else
+						else // TODO: Remake to not use conversion from  List<int[]>  to  int[,] .
 						{
 							if(pathList.Length == 0) throw new ArgumentOutOfRangeException(nameof(pathList), "Too few shortest path list content.");
 							
@@ -141,8 +141,6 @@ namespace BasicPathingLabyrinth
 
 				// TODO: find a way to print the matrix with lines separated by a blank line, But without any at the end.
 				PrintBorder(matrix.GetLength(0));
-
-				 
             }
 		}
 
@@ -180,6 +178,7 @@ namespace BasicPathingLabyrinth
 			else throw new ArgumentOutOfRangeException("ERROR.. Insufficient cells.\nThe Start and End points could not be connected.\n" +
 					"Verify that \"MapData.txt\" contains correct values.");
 		}
+
 
 		private static int[,] ListToArray(List<int[]> pathList)
 		{
